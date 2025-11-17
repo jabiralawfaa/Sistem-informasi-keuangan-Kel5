@@ -56,11 +56,11 @@ In order to ensure that the Laravel community is welcoming to all, please review
 
 If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## Database Schema
+## Skema Database
 
-This project implements a Financial Information System using Laravel's Eloquent ORM to manage financial transactions and reporting.
+Proyek ini mengimplementasikan Sistem Informasi Keuangan menggunakan Eloquent ORM Laravel untuk mengelola transaksi keuangan dan pelaporan.
 
-### Entity Relationship Diagram (ERD)
+### Diagram Entitas Relasi (ERD)
 
 ```mermaid
 erDiagram
@@ -77,8 +77,8 @@ erDiagram
     CATEGORIES {
         int id PK
         string name
-        enum category_type
-        string description
+        enum type
+        text description
         timestamp created_at
         timestamp updated_at
     }
@@ -88,9 +88,9 @@ erDiagram
         int user_id FK
         int category_id FK
         decimal amount
-        string description
-        enum transaction_type
-        date transaction_date
+        text description
+        enum type
+        date date
         int receipt_id FK
         timestamp created_at
         timestamp updated_at
@@ -100,12 +100,12 @@ erDiagram
         int id PK
         string receipt_number
         string title
-        string description
+        text description
         decimal amount
         timestamp issued_date
         string issued_by
         string recipient_name
-        string recipient_address
+        text recipient_address
         timestamp created_at
         timestamp updated_at
     }
@@ -114,8 +114,8 @@ erDiagram
         int id PK
         int user_id FK
         decimal balance
-        date balance_date
-        string description
+        date date
+        text description
         timestamp created_at
         timestamp updated_at
     }
@@ -124,132 +124,132 @@ erDiagram
         int id PK
         int user_id FK
         string title
-        enum report_type
+        enum type
         date period_start
         date period_end
         decimal total_income
         decimal total_expenses
         decimal net_income
-        string content
+        longtext content
         string file_path
         timestamp created_at
         timestamp updated_at
     }
 
-    USERS ||--o{ TRANSACTIONS : "creates"
-    USERS ||--o{ CASH_BALANCES : "manages"
-    USERS ||--o{ REPORTS : "generates"
-    CATEGORIES ||--o{ TRANSACTIONS : "categorizes"
-    RECEIPTS }o--o{ TRANSACTIONS : "has"
+    USERS ||--o{ TRANSACTIONS : membuat
+    USERS ||--o{ CASH_BALANCES : mengelola
+    USERS ||--o{ REPORTS : menghasilkan
+    CATEGORIES ||--o{ TRANSACTIONS : mengkategorikan
+    RECEIPTS ||--o{ TRANSACTIONS : terkait_dengan
 ```
 
-### Database Tables
+### Tabel Database
 
-#### 1. users table
-| Column | Type | Description |
+#### 1. Tabel users
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| name | string | User's full name |
-| email | string | User's email address (unique) |
-| password | string | Hashed password |
-| role | enum | User role: 'admin', 'bendahara', 'auditor' |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| name | string | Nama lengkap pengguna |
+| email | string | Alamat email pengguna (unik) |
+| password | string | Kata sandi yang di-hash |
+| role | enum | Peran pengguna: 'admin', 'bendahara', 'auditor' |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-#### 2. categories table
-| Column | Type | Description |
+#### 2. Tabel categories
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| name | string | Category name (e.g., "Pendapatan Usaha", "Biaya Operasional") |
-| type | enum | Type: 'income' or 'expense' |
-| description | text | Description of the category |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| name | string | Nama kategori (misalnya "Pendapatan Usaha", "Biaya Operasional") |
+| type | enum | Jenis: 'income' atau 'expense' |
+| description | text | Deskripsi kategori |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-#### 3. transactions table
-| Column | Type | Description |
+#### 3. Tabel transactions
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| user_id | int (FK) | Foreign key to users table |
-| category_id | int (FK) | Foreign key to categories table |
-| amount | decimal(15,2) | Transaction amount |
-| description | text | Description of the transaction |
-| type | enum | Type: 'income' or 'expense' |
-| date | date | Date of the transaction |
-| receipt_id | int (FK) | Foreign key to receipts table (nullable) |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| user_id | int (FK) | Foreign key ke tabel users |
+| category_id | int (FK) | Foreign key ke tabel categories |
+| amount | decimal(15,2) | Jumlah transaksi |
+| description | text | Deskripsi transaksi |
+| type | enum | Jenis: 'income' atau 'expense' |
+| date | date | Tanggal transaksi |
+| receipt_id | int (FK) | Foreign key ke tabel receipts (dapat null) |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-#### 4. receipts table
-| Column | Type | Description |
+#### 4. Tabel receipts
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| receipt_number | string (unique) | Unique receipt number |
-| title | string | Title of the receipt |
-| description | text | Description of the receipt |
-| amount | decimal(15,2) | Amount on the receipt |
-| issued_date | timestamp | Date when receipt was issued |
-| issued_by | string | Name of person who issued receipt |
-| recipient_name | string | Name of recipient |
-| recipient_address | text | Address of recipient |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| receipt_number | string (unik) | Nomor kwitansi unik |
+| title | string | Judul kwitansi |
+| description | text | Deskripsi kwitansi |
+| amount | decimal(15,2) | Jumlah pada kwitansi |
+| issued_date | timestamp | Tanggal kwitansi dikeluarkan |
+| issued_by | string | Nama orang yang mengeluarkan kwitansi |
+| recipient_name | string | Nama penerima |
+| recipient_address | text | Alamat penerima |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-#### 5. cash_balances table
-| Column | Type | Description |
+#### 5. Tabel cash_balances
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| user_id | int (FK) | Foreign key to users table |
-| balance | decimal(15,2) | Current cash balance |
-| date | date | Date of the balance record |
-| description | text | Description of the balance entry |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| user_id | int (FK) | Foreign key ke tabel users |
+| balance | decimal(15,2) | Saldo kas saat ini |
+| date | date | Tanggal catatan saldo |
+| description | text | Deskripsi entri saldo |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-#### 6. reports table
-| Column | Type | Description |
+#### 6. Tabel reports
+| Kolom | Tipe | Deskripsi |
 |--------|------|-------------|
 | id | int (PK) | Primary key |
-| user_id | int (FK) | Foreign key to users table |
-| title | string | Title of the report |
-| type | enum | Type: 'monthly', 'quarterly', 'annual' |
-| period_start | date | Start date of reporting period |
-| period_end | date | End date of reporting period |
-| total_income | decimal(15,2) | Total income during period |
-| total_expenses | decimal(15,2) | Total expenses during period |
-| net_income | decimal(15,2) | Net income (total income - total expenses) |
-| content | longtext | Detailed content of the report |
-| file_path | string | Path to report file (nullable) |
-| created_at | timestamp | Record creation time |
-| updated_at | timestamp | Record update time |
+| user_id | int (FK) | Foreign key ke tabel users |
+| title | string | Judul laporan |
+| type | enum | Jenis: 'monthly', 'quarterly', 'annual' |
+| period_start | date | Tanggal awal periode pelaporan |
+| period_end | date | Tanggal akhir periode pelaporan |
+| total_income | decimal(15,2) | Total pendapatan selama periode |
+| total_expenses | decimal(15,2) | Total pengeluaran selama periode |
+| net_income | decimal(15,2) | Pendapatan bersih (total pendapatan - total pengeluaran) |
+| content | longtext | Konten terperinci laporan |
+| file_path | string | Jalur ke file laporan (dapat null) |
+| created_at | timestamp | Waktu pembuatan record |
+| updated_at | timestamp | Waktu pembaruan record |
 
-## Features Implemented
+## Fitur yang Diimplementasikan
 
-1. **Financial Transaction Recording**: 
-   - Income and expense recording with categorization
-   - Date tracking and descriptions
-   - User attribution
+1. **Pencatatan Transaksi Keuangan**: 
+   - Pencatatan pendapatan dan pengeluaran dengan pengkategorian
+   - Pelacakan tanggal dan deskripsi
+   - Atribusi pengguna
 
-2. **Monthly Financial Reports**:
-   - Automated calculation of income, expenses, and net income
-   - Time period specification
-   - Detailed content and file attachment options
+2. **Laporan Keuangan Bulanan**:
+   - Perhitungan otomatis pendapatan, pengeluaran, dan pendapatan bersih
+   - Spesifikasi periode waktu
+   - Opsi konten terperinci dan lampiran file
 
-3. **Digital Receipts**:
-   - Unique receipt numbers
-   - Issuer and recipient information
-   - Amount tracking
+3. **Kwitansi Digital**:
+   - Nomor kwitansi unik
+   - Informasi penerbit dan penerima
+   - Pelacakan jumlah
 
-4. **Cash Balance Monitoring**:
-   - Real-time cash balance tracking
-   - Historical balance records
-   - Date-specific balance tracking
+4. **Pemantauan Saldo Kas**:
+   - Pemantauan saldo kas secara real-time
+   - Catatan riwayat saldo
+   - Pelacakan saldo berdasarkan tanggal
 
-5. **Role-based Access Control**:
-   - Admin Keuangan: Full access to all features
-   - Bendahara: Transaction recording and basic reporting
-   - Auditor: Read-only access for auditing purposes
+5. **Kontrol Akses Berbasis Peran**:
+   - Admin Keuangan: Akses penuh ke semua fitur
+   - Bendahara: Pencatatan transaksi dan pelaporan dasar
+   - Auditor: Akses hanya baca untuk keperluan audit
 
-## License
+## Lisensi
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Framework Laravel adalah perangkat lunak open-source yang dilisensikan di bawah [lisensi MIT](https://opensource.org/licenses/MIT).
