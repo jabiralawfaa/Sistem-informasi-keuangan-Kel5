@@ -77,8 +77,8 @@ erDiagram
     CATEGORIES {
         int id PK
         string name
-        enum type
-        text description
+        enum category_type
+        string description
         timestamp created_at
         timestamp updated_at
     }
@@ -88,9 +88,9 @@ erDiagram
         int user_id FK
         int category_id FK
         decimal amount
-        text description
-        enum type
-        date date
+        string description
+        enum transaction_type
+        date transaction_date
         int receipt_id FK
         timestamp created_at
         timestamp updated_at
@@ -100,12 +100,12 @@ erDiagram
         int id PK
         string receipt_number
         string title
-        text description
+        string description
         decimal amount
         timestamp issued_date
         string issued_by
         string recipient_name
-        text recipient_address
+        string recipient_address
         timestamp created_at
         timestamp updated_at
     }
@@ -114,8 +114,8 @@ erDiagram
         int id PK
         int user_id FK
         decimal balance
-        date date
-        text description
+        date balance_date
+        string description
         timestamp created_at
         timestamp updated_at
     }
@@ -124,23 +124,23 @@ erDiagram
         int id PK
         int user_id FK
         string title
-        enum type
+        enum report_type
         date period_start
         date period_end
         decimal total_income
         decimal total_expenses
         decimal net_income
-        longtext content
+        string content
         string file_path
         timestamp created_at
         timestamp updated_at
     }
 
-    USERS ||--o{ TRANSACTIONS : creates
-    USERS ||--o{ CASH_BALANCES : manages
-    USERS ||--o{ REPORTS : generates
-    CATEGORIES ||--o{ TRANSACTIONS : categorizes
-    RECEIPTS ||--o{ TRANSACTIONS : links_to
+    USERS ||--o{ TRANSACTIONS : "creates"
+    USERS ||--o{ CASH_BALANCES : "manages"
+    USERS ||--o{ REPORTS : "generates"
+    CATEGORIES ||--o{ TRANSACTIONS : "categorizes"
+    RECEIPTS }o--o{ TRANSACTIONS : "has"
 ```
 
 ### Database Tables
