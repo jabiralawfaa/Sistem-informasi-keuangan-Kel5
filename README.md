@@ -226,29 +226,48 @@ erDiagram
 ## Fitur yang Diimplementasikan
 
 1. **Pencatatan Transaksi Keuangan**: 
-   - Pencatatan pendapatan dan pengeluaran dengan pengkategorian
-   - Pelacakan tanggal dan deskripsi
-   - Atribusi pengguna
+   - [ ] Pencatatan pendapatan dan pengeluaran dengan pengkategorian
+   - [ ] Pelacakan tanggal dan deskripsi
+   - [ ] Atribusi pengguna
 
 2. **Laporan Keuangan Bulanan**:
-   - Perhitungan otomatis pendapatan, pengeluaran, dan pendapatan bersih
-   - Spesifikasi periode waktu
-   - Opsi konten terperinci dan lampiran file
+   - [ ] Perhitungan otomatis pendapatan, pengeluaran, dan pendapatan bersih
+   - [ ] Spesifikasi periode waktu
+   - [ ] Opsi konten terperinci dan lampiran file
 
 3. **Kwitansi Digital**:
-   - Nomor kwitansi unik
-   - Informasi penerbit dan penerima
-   - Pelacakan jumlah
+   - [ ] Nomor kwitansi unik
+   - [ ] Informasi penerbit dan penerima
+   - [ ] Pelacakan jumlah
 
 4. **Pemantauan Saldo Kas**:
-   - Pemantauan saldo kas secara real-time
-   - Catatan riwayat saldo
-   - Pelacakan saldo berdasarkan tanggal
+   - [ ] Pemantauan saldo kas secara real-time
+   - [ ] Catatan riwayat saldo
+   - [ ] Pelacakan saldo berdasarkan tanggal
 
 5. **Kontrol Akses Berbasis Peran**:
-   - Admin Keuangan: Akses penuh ke semua fitur
-   - Bendahara: Pencatatan transaksi dan pelaporan dasar
-   - Auditor: Akses hanya baca untuk keperluan audit
+   - [ ] Admin Keuangan: Akses penuh ke semua fitur
+   - [ ] Bendahara: Pencatatan transaksi dan pelaporan dasar
+   - [ ] Auditor: Akses hanya baca untuk keperluan audit
+
+## Checklist Tugas Tim
+
+- [x] Membuat skema database untuk sistem informasi keuangan
+- [x] Mengimplementasikan model Eloquent untuk setiap tabel
+- [x] Membuat migration untuk setiap tabel
+- [x] Membuat dan menguji relasi antar model
+- [x] Membuat seeder untuk data awal
+- [x] Menambahkan dokumentasi ERD menggunakan Mermaid.js
+- [x] Menambahkan dokumentasi tabel database
+- [x] Menambahkan daftar checklist tugas tim
+- [ ] Implementasi antarmuka pengguna (UI)
+- [ ] Implementasi sistem otentikasi dan otorisasi
+- [ ] Implementasi fitur pencatatan transaksi
+- [ ] Implementasi fitur laporan keuangan
+- [ ] Implementasi fitur cetak kwitansi
+- [ ] Implementasi fitur monitoring saldo kas
+- [ ] Uji coba dan debugging
+- [ ] Deployment aplikasi
 
 ## Lisensi
 
