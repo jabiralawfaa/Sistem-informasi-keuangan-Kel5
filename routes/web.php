@@ -16,6 +16,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -119,3 +120,5 @@ Route::get('/test-email', function () {
 });
 
 require __DIR__.'/auth.php';
+=======
+>>>>>>> 081b149 (coba push)
