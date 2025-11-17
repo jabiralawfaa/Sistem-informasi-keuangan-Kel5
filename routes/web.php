@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\AuditorDashboardController;
 use App\Http\Controllers\BendaharaDashboardController;
@@ -10,12 +11,16 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\HomeController;
+=======
+use App\Http\Controllers\ProfileController;
+>>>>>>> 9ecfd83 (breeze update)
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -99,11 +104,19 @@ Route::middleware(['auth', 'role-check'])->group(function () {
 
 
 Route::middleware(['auth', 'role-check'])->group(function () {
+=======
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+>>>>>>> 9ecfd83 (breeze update)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+<<<<<<< HEAD
 // Test email route
 Route::get('/test-email', function () {
     $details = [
@@ -122,3 +135,6 @@ Route::get('/test-email', function () {
 require __DIR__.'/auth.php';
 =======
 >>>>>>> 081b149 (coba push)
+=======
+require __DIR__.'/auth.php';
+>>>>>>> 9ecfd83 (breeze update)
