@@ -77,7 +77,7 @@
             <div class="lg:col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-xl font-bold text-amber-400">Recent Transactions</h2>
-                    <a href="{{ route('transactions.index') }}" class="text-sm text-amber-400 hover:text-amber-300">View All</a>
+                    <a href="{{ route('bendahara.transactions.index') }}" class="text-sm text-amber-400 hover:text-amber-300">View All</a>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full">
@@ -123,7 +123,7 @@
             <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <h2 class="text-xl font-bold mb-4 text-amber-400">Quick Actions</h2>
                 <div class="space-y-3">
-                    <a href="{{ route('transactions.create') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
+                    <a href="{{ route('bendahara.transactions.create') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Add Transaction
                     </a>
                     <a href="{{ route('receipts.print') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
