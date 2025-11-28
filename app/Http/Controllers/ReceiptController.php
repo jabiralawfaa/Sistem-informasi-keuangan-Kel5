@@ -115,9 +115,15 @@ class ReceiptController extends Controller
     /**
      * Print the specified receipt.
      */
-    public function print(Receipt $receipt)
+    public function print()
     {
-        return view('receipts.print', compact('receipt'));
+        $receipt = Receipt::latest();
+    
+        if (!$receipt->issued_date) {
+            $receipt->issued_date = now(); // fallback
+        }
+        $amountInWords = $this->numberToWords($receipt->amount);
+        return view('receipts.print', compact('receipt', 'amountInWords'));
     }
 
     /**

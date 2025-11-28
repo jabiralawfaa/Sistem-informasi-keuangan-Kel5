@@ -36,7 +36,20 @@ Route::middleware(['auth', 'role:bendahara'])->group(function () {
         return view('bendahara.dashboard');
     })->name('bendahara.dashboard');
 
-    Route::resource('/bendahara/transactions', TransactionController::class);
+    Route::resource('/bendahara/transactions', TransactionController::class)->names('bendahara.transactions');
+    Route::prefix('bendahara')->name('bendahara.')->group(function () {
+        Route::resource('transactions', TransactionController::class);
+    });
+
+
+    Route::resource('/transactions/index', TransactionController::class)->names('transactions.index');
+    Route::get('/transactions/index', [TransactionController::class, 'index'])->name('transactions.index');
+
+    Route::resource('/transactions/create', TransactionController::class)->names('transactions.create');
+    Route::get('/transactions/create', [TransactionController::class, 'index'])->name('transactions.create');
+
+    Route::resource('/receipts/print', ReceiptController::class)->names('receipts.print');
+    Route::get('/receipts/print', [ReceiptController::class, 'print'])->name('receipts.print');
 
     Route::resource('/bendahara/reports', ReportController::class)->names('bendahara.reports');
     Route::get('/bendahara/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('bendahara.reports.monthly');
