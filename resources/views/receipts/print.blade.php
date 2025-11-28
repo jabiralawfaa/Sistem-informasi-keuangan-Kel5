@@ -101,7 +101,7 @@
         }
     </style>
 </head>
-<body onload="window.print(); window.close();">
+<body onload="window.print();">
     <div class="receipt-container">
         <div class="receipt-header">
             <h1 class="receipt-title">RECEIPT</h1>

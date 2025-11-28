@@ -30,6 +30,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         })->name('users');
 
         Route::resource('reports', ReportController::class);
+        Route::resource('transactions', TransactionController::class);
+        Route::resource('receipts', ReceiptController::class);
+        Route::resource('reports', ReportController::class);
+        Route::resource('cash-balances', CashBalanceController::class);
 
         Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
             ->name('reports.monthly');
@@ -38,7 +42,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 // Bendahara routes
-Route::middleware(['auth', 'role:bendahara'])->group(function () {
+Route::middleware(['auth', 'role:bendahara|admin|auditor '])->group(function () {
 
     // Dashboard Bendahara
     Route::get('/bendahara/dashboard', function () {
@@ -63,9 +67,8 @@ Route::middleware(['auth', 'role:bendahara'])->group(function () {
     Route::post('/bendahara/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])
         ->name('bendahara.transactions.receipt');
 
-    Route::get('/receipts/print', [ReceiptController::class, 'print'])
-        ->name('receipts.print');
-
+    Route::get('/receipts/print/{receipt}', [ReceiptController::class, 'print'])
+    ->name('receipts.print');
 });
 
 
@@ -81,6 +84,15 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
 
     Route::resource('/auditor/reports', ReportController::class)
         ->names('auditor.reports');
+});
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::resource('/reports', ReportController::class);
+
+    Route::get('/reports/generate/monthly', [ReportController::class, 'generateMonthlyReport'])
+        ->name('reports.generateMonthly');
+
 });
 
 

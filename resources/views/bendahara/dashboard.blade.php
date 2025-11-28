@@ -119,6 +119,10 @@
                 </div>
             </div>
 
+            @php
+                $receipt = \App\Models\Receipt::latest()->first();
+            @endphp
+
             <!-- Quick Actions -->
             <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <h2 class="text-xl font-bold mb-4 text-amber-400">Quick Actions</h2>
@@ -126,9 +130,15 @@
                     <a href="{{ route('bendahara.transactions.create') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Add Transaction
                     </a>
-                    <a href="{{ route('receipts.print') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    @if ($receipt)
+                    <a href="{{ route('receipts.print', $receipt->id) }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Print Receipt
                     </a>
+                    @else
+                    <button disabled class="block w-full text-center px-4 py-3 bg-gray-700 opacity-50 rounded-lg">
+                        No Receipt Available
+                    </button>
+                    @endif
                     <a href="#" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         View Cash Flow
                     </a>
