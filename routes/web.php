@@ -71,13 +71,18 @@ Route::middleware(['auth', 'role:bendahara'])->group(function () {
 
 // Auditor routes
 Route::middleware(['auth', 'role:auditor'])->group(function () {
+
     Route::get('/auditor/dashboard', function () {
         return view('auditor.dashboard');
     })->name('auditor.dashboard');
 
-    Route::resource('/auditor/reports', ReportController::class)->names('auditor.reports');
-    Route::get('/auditor/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('auditor.reports.monthly');
+    Route::get('/auditor/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
+        ->name('auditor.reports.monthly');
+
+    Route::resource('/auditor/reports', ReportController::class)
+        ->names('auditor.reports');
 });
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
