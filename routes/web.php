@@ -18,17 +18,24 @@ Route::get('/dashboard', [HomeController::class, 'index'])
 
 // Admin routes
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('admin.dashboard');
 
-    Route::get('/admin/users', function () {
-        return view('admin.users');
-    })->name('admin.users');
+    Route::prefix('admin')->name('admin.')->group(function () {
 
-    Route::resource('/admin/reports', ReportController::class)->names('admin.reports');
-    Route::get('/admin/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('admin.reports.monthly');
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+        Route::get('/users', function () {
+            return view('admin.users');
+        })->name('users');
+
+        Route::resource('reports', ReportController::class);
+
+        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
+            ->name('reports.monthly');
+    });
 });
+
 
 // Bendahara routes
 Route::middleware(['auth', 'role:bendahara'])->group(function () {
