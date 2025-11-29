@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Income</p>
-                        <p class="text-2xl font-bold text-green-400">Rp 18,500,000</p>
+                        <p class="text-2xl font-bold text-green-400">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Expenses</p>
-                        <p class="text-2xl font-bold text-red-400">Rp 8,300,000</p>
+                        <p class="text-2xl font-bold text-red-400">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Cash Balance</p>
-                        <p class="text-2xl font-bold text-amber-400">Rp 10,200,000</p>
+                        <p class="text-2xl font-bold text-amber-400">Rp {{ number_format($calculatedCashBalance, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Transactions This Month</p>
-                        <p class="text-2xl font-bold text-blue-400">24</p>
+                        <p class="text-2xl font-bold text-blue-400">{{ $transactionsThisMonth }}</p>
                     </div>
                 </div>
             </div>
@@ -90,38 +90,34 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($recentTransactions as $transaction)
                             <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-15</td>
-                                <td class="py-3 px-4">Office Supplies</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-red-900/30 text-red-400 rounded text-xs">Expense</span></td>
-                                <td class="py-3 px-4 text-red-400">Rp 1,200,000</td>
+                                <td class="py-3 px-4">{{ $transaction->date->format('Y-m-d') }}</td>
+                                <td class="py-3 px-4">{{ $transaction->description }}</td>
+                                <td class="py-3 px-4">
+                                    @if($transaction->type === 'income')
+                                        <span class="px-2 py-1 bg-green-900/30 text-green-400 rounded text-xs">Income</span>
+                                    @else
+                                        <span class="px-2 py-1 bg-red-900/30 text-red-400 rounded text-xs">Expense</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    @if($transaction->type === 'income')
+                                        <span class="text-green-400">+Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
+                                    @else
+                                        <span class="text-red-400">-Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
+                                    @endif
+                                </td>
                             </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-14</td>
-                                <td class="py-3 px-4">Project Payment</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-green-900/30 text-green-400 rounded text-xs">Income</span></td>
-                                <td class="py-3 px-4 text-green-400">Rp 5,000,000</td>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="py-4 text-center text-gray-500">No recent transactions</td>
                             </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-12</td>
-                                <td class="py-3 px-4">Utility Bills</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-red-900/30 text-red-400 rounded text-xs">Expense</span></td>
-                                <td class="py-3 px-4 text-red-400">Rp 800,000</td>
-                            </tr>
-                            <tr class="hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-10</td>
-                                <td class="py-3 px-4">Consultation Fee</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-green-900/30 text-green-400 rounded text-xs">Income</span></td>
-                                <td class="py-3 px-4 text-green-400">Rp 3,500,000</td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
             </div>
-
-            @php
-                $receipt = \App\Models\Receipt::latest()->first();
-            @endphp
 
             <!-- Quick Actions -->
             <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
@@ -130,8 +126,8 @@
                     <a href="{{ route('bendahara.transactions.create') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Add Transaction
                     </a>
-                    @if ($receipt)
-                    <a href="{{ route('receipts.print', $receipt->id) }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    @if ($latestReceipt)
+                    <a href="{{ route('bendahara.receipts.print', $latestReceipt->id) }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Print Receipt
                     </a>
                     @else
@@ -139,10 +135,10 @@
                         No Receipt Available
                     </button>
                     @endif
-                    <a href="#" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    <a href="{{ route('bendahara.cash-balances.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         View Cash Flow
                     </a>
-                    <a href="#" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    <a href="{{ route('bendahara.transactions.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Export Transactions
                     </a>
                 </div>

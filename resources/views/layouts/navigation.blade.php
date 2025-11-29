@@ -18,7 +18,7 @@
 
                     @auth
                         @if(Auth::user()->role === 'admin')
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                            <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
                                 {{ __('Admin') }}
                             </x-nav-link>
                         @elseif(Auth::user()->role === 'bendahara')
@@ -92,8 +92,8 @@
 
             @auth
                 @if(Auth::user()->role === 'admin')
-                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                        {{ __('Admin Dashboard') }}
+                    <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
+                        {{ __('User Roles') }}
                     </x-responsive-nav-link>
                 @elseif(Auth::user()->role === 'bendahara')
                     <x-responsive-nav-link :href="route('bendahara.transactions.index')" :active="request()->routeIs('bendahara.transactions.index')">

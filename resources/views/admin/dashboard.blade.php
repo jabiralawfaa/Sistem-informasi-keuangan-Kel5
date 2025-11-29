@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Users</p>
-                        <p class="text-2xl font-bold text-amber-400">12</p>
+                        <p class="text-2xl font-bold text-amber-400">{{ $totalUsers }}</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Transactions</p>
-                        <p class="text-2xl font-bold text-amber-400">142</p>
+                        <p class="text-2xl font-bold text-amber-400">{{ $totalTransactions }}</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Income</p>
-                        <p class="text-2xl font-bold text-green-400">Rp 24,500,000</p>
+                        <p class="text-2xl font-bold text-green-400">Rp {{ number_format($totalIncome, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Expenses</p>
-                        <p class="text-2xl font-bold text-red-400">Rp 12,300,000</p>
+                        <p class="text-2xl font-bold text-red-400">Rp {{ number_format($totalExpenses, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -77,6 +77,7 @@
             <div class="lg:col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <h2 class="text-xl font-bold mb-4 text-amber-400">Recent Activities</h2>
                 <div class="space-y-4">
+                    @forelse($recentTransactions as $transaction)
                     <div class="flex items-start border-b border-gray-700 pb-3">
                         <div class="p-2 rounded-full bg-amber-900/30 mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -84,11 +85,18 @@
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-medium">New transaction added</h3>
-                            <p class="text-sm text-gray-400">Bendahara added a new income transaction</p>
-                            <p class="text-xs text-gray-500 mt-1">10 minutes ago</p>
+                            <h3 class="font-medium">{{ $transaction->description }}</h3>
+                            <p class="text-sm text-gray-400">{{ $transaction->user->name }} added a new {{ $transaction->type }} transaction</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ $transaction->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
+                    @empty
+                    <div class="text-center py-4 text-gray-500">
+                        No recent transactions
+                    </div>
+                    @endforelse
+
+                    @forelse($recentUsers as $user)
                     <div class="flex items-start border-b border-gray-700 pb-3">
                         <div class="p-2 rounded-full bg-amber-900/30 mr-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,22 +105,12 @@
                         </div>
                         <div>
                             <h3 class="font-medium">User registered</h3>
-                            <p class="text-sm text-gray-400">New user registered to the system</p>
-                            <p class="text-xs text-gray-500 mt-1">30 minutes ago</p>
+                            <p class="text-sm text-gray-400">{{ $user->name }} registered to the system</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ $user->created_at->diffForHumans() }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start border-b border-gray-700 pb-3">
-                        <div class="p-2 rounded-full bg-amber-900/30 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-medium">Report generated</h3>
-                            <p class="text-sm text-gray-400">Monthly financial report generated</p>
-                            <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
-                        </div>
-                    </div>
+                    @empty
+                    @endforelse
                 </div>
             </div>
 
@@ -121,7 +119,7 @@
                 <h2 class="text-xl font-bold mb-4 text-amber-400">Quick Actions</h2>
                 <div class="space-y-3">
                     <a href="{{ route('admin.users') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
-                        Manage Users
+                        Assign User Roles
                     </a>
                     <a href="{{ route('admin.transactions.index') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
                         View Transactions
@@ -129,8 +127,8 @@
                     <a href="{{ route('reports.index') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
                         Generate Reports
                     </a>
-                    <a href="#" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
-                        Export Data
+                    <a href="{{ route('admin.users.management') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
+                        All Users
                     </a>
                 </div>
             </div>

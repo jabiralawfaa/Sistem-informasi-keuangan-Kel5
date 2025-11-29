@@ -22,7 +22,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Income</p>
-                        <p class="text-2xl font-bold text-green-400">Rp 24,500,000</p>
+                        <p class="text-2xl font-bold text-green-400">Rp {{ number_format($totalIncome ?? 0, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -37,7 +37,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Expenses</p>
-                        <p class="text-2xl font-bold text-red-400">Rp 12,300,000</p>
+                        <p class="text-2xl font-bold text-red-400">Rp {{ number_format($totalExpenses ?? 0, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Cash Balance</p>
-                        <p class="text-2xl font-bold text-amber-400">Rp 12,200,000</p>
+                        <p class="text-2xl font-bold text-amber-400">Rp {{ number_format($calculatedCashBalance ?? 0, 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -67,7 +67,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Net Income</p>
-                        <p class="text-2xl font-bold text-blue-400">Rp 12,200,000</p>
+                        <p class="text-2xl font-bold text-blue-400">Rp {{ number_format(($totalIncome ?? 0) - ($totalExpenses ?? 0), 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
@@ -155,54 +155,28 @@
                     <a href="{{ route('bendahara.transactions.index') }}" class="text-sm text-amber-400 hover:text-amber-300">View All</a>
                 </div>
                 <div class="space-y-4">
+                    @forelse($recentTransactions ?? collect() as $transaction)
                     <div class="flex items-start border-b border-gray-700 pb-3">
-                        <div class="p-2 rounded-full bg-green-900/30 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="p-2 rounded-full bg-{{ $transaction->type === 'income' ? 'green' : 'red' }}-900/30 mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-{{ $transaction->type === 'income' ? 'green' : 'red' }}-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                @if($transaction->type === 'income')
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3-3m0 0l3 3m-3-3v8m0 13a9 9 0 110-18 9 9 0 010 18z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-medium">New income transaction added</h3>
-                            <p class="text-sm text-gray-400">Project payment of Rp 5,000,000</p>
-                            <p class="text-xs text-gray-500 mt-1">2 hours ago</p>
-                        </div>
-                    </div>
-                    <div class="flex items-start border-b border-gray-700 pb-3">
-                        <div class="p-2 rounded-full bg-red-900/30 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                @else
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13l-3 3m0 0l-3-3m3 3V8m0 13a9 9 0 110-18 9 9 0 010 18z" />
+                                @endif
                             </svg>
                         </div>
                         <div>
-                            <h3 class="font-medium">New expense recorded</h3>
-                            <p class="text-sm text-gray-400">Office supplies worth Rp 1,200,000</p>
-                            <p class="text-xs text-gray-500 mt-1">Yesterday</p>
+                            <h3 class="font-medium">{{ $transaction->type === 'income' ? 'New income' : 'New expense' }} transaction added</h3>
+                            <p class="text-sm text-gray-400">{{ $transaction->description }}</p>
+                            <p class="text-xs text-gray-500 mt-1">{{ $transaction->date->diffForHumans() }}</p>
                         </div>
                     </div>
-                    <div class="flex items-start border-b border-gray-700 pb-3">
-                        <div class="p-2 rounded-full bg-amber-900/30 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-medium">Cash balance updated</h3>
-                            <p class="text-sm text-gray-400">Balance recorded as Rp 12,200,000</p>
-                            <p class="text-xs text-gray-500 mt-1">2 days ago</p>
-                        </div>
+                    @empty
+                    <div class="text-center py-4 text-gray-500">
+                        No recent transactions
                     </div>
-                    <div class="flex items-start">
-                        <div class="p-2 rounded-full bg-blue-900/30 mr-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                        </div>
-                        <div>
-                            <h3 class="font-medium">Monthly report generated</h3>
-                            <p class="text-sm text-gray-400">Financial report for April 2025</p>
-                            <p class="text-xs text-gray-500 mt-1">3 days ago</p>
-                        </div>
-                    </div>
+                    @endforelse
                 </div>
             </div>
 
@@ -210,6 +184,7 @@
             <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <h2 class="text-xl font-bold mb-4 text-amber-400">Quick Actions</h2>
                 <div class="space-y-3">
+                    @if(Auth::user()->role !== 'guest')
                     <a href="{{ route('bendahara.transactions.create') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 rounded-lg transition duration-200 text-white font-medium">
                         Add Transaction
                     </a>
@@ -219,12 +194,32 @@
                     <a href="{{ route('bendahara.reports.create') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
                         Generate Report
                     </a>
-                    <a href="{{ route('cash_balances.create') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
+                    @else
+                    <div class="w-full text-center px-4 py-3 bg-gradient-to-r from-amber-600 to-amber-700 rounded-lg text-gray-300 font-medium cursor-not-allowed">
+                        Add Transaction
+                    </div>
+                    <div class="w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-gray-500 font-medium border border-gray-700 cursor-not-allowed">
+                        Create Receipt
+                    </div>
+                    <div class="w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-gray-500 font-medium border border-gray-700 cursor-not-allowed">
+                        Generate Report
+                    </div>
+                    @endif
+                    @if(Auth::user()->role !== 'guest')
+                    <a href="{{ route('bendahara.cash-balances.create') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
                         Record Balance
                     </a>
-                    <a href="{{ route('cash_balances.monitor') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
+                    <a href="{{ route('bendahara.cash-balances.monitor') }}" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 rounded-lg transition duration-200 text-amber-400 font-medium border border-amber-900">
                         Monitor Balance
                     </a>
+                    @else
+                    <div class="w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-gray-500 font-medium border border-gray-700 cursor-not-allowed">
+                        Record Balance
+                    </div>
+                    <div class="w-full text-center px-4 py-3 bg-gradient-to-r from-gray-700 to-gray-800 rounded-lg text-gray-500 font-medium border border-gray-700 cursor-not-allowed">
+                        Monitor Balance
+                    </div>
+                    @endif
                 </div>
 
                 <div class="mt-6 pt-6 border-t border-gray-700">

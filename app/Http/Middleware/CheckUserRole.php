@@ -7,24 +7,20 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 
-class RoleMiddleware
+class CheckUserRole
 {
     /**
      * Handle an incoming request.
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string $roles): Response
+    public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
         $user = Auth::user();
-        $rolesArray = explode('|', $roles); // Memisahkan role berdasarkan |
 
-        if (!in_array($user->role, $rolesArray)) {
-            abort(403, 'Unauthorized access. You do not have the required role.');
+        // Jika user memiliki role 'guest', kembalikan ke dashboard dengan pesan
+        if ($user && $user->role === 'guest') {
+            return redirect()->route('dashboard')->with('error', 'Your account is pending admin approval. Please wait for an admin to assign you a role.');
         }
 
         return $next($request);

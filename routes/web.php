@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\AuditorDashboardController;
+use App\Http\Controllers\BendaharaDashboardController;
 use App\Http\Controllers\CashBalanceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReceiptController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\UserRoleController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,18 +25,16 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])
+            ->name('dashboard');
 
-        Route::get('/users', function () {
-            return view('admin.users');
-        })->name('users');
+        Route::get('/users', [App\Http\Controllers\UserRoleController::class, 'index'])->name('users');
+        Route::put('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role');
+        Route::get('/users-management', [App\Http\Controllers\UserRoleController::class, 'allUsers'])->name('users.management');
 
         Route::resource('reports', ReportController::class);
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
-        Route::resource('reports', ReportController::class);
         Route::resource('cash-balances', CashBalanceController::class);
 
         Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
@@ -42,12 +44,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
 
 // Bendahara routes
-Route::middleware(['auth', 'role:bendahara|admin|auditor '])->group(function () {
+Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->group(function () {
 
     // Dashboard Bendahara
-    Route::get('/bendahara/dashboard', function () {
-        return view('bendahara.dashboard');
-    })->name('bendahara.dashboard');
+    Route::get('/bendahara/dashboard', [App\Http\Controllers\BendaharaDashboardController::class, 'index'])
+        ->name('bendahara.dashboard');
 
     // Transactions (resource)
     Route::prefix('bendahara')->name('bendahara.')->group(function () {
@@ -55,6 +56,7 @@ Route::middleware(['auth', 'role:bendahara|admin|auditor '])->group(function () 
         Route::resource('receipts', ReceiptController::class);
         Route::resource('reports', ReportController::class);
         Route::resource('cash-balances', CashBalanceController::class);
+        Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
     });
 
     // Tambahan action custom
@@ -73,11 +75,10 @@ Route::middleware(['auth', 'role:bendahara|admin|auditor '])->group(function () 
 
 
 // Auditor routes
-Route::middleware(['auth', 'role:auditor'])->group(function () {
+Route::middleware(['auth', 'role-check', 'role:auditor'])->group(function () {
 
-    Route::get('/auditor/dashboard', function () {
-        return view('auditor.dashboard');
-    })->name('auditor.dashboard');
+    Route::get('/auditor/dashboard', [App\Http\Controllers\AuditorDashboardController::class, 'index'])
+        ->name('auditor.dashboard');
 
     Route::get('/auditor/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
         ->name('auditor.reports.monthly');
@@ -86,7 +87,7 @@ Route::middleware(['auth', 'role:auditor'])->group(function () {
         ->names('auditor.reports');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'role-check'])->group(function () {
 
     Route::resource('/reports', ReportController::class);
 
@@ -96,7 +97,7 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'role-check'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

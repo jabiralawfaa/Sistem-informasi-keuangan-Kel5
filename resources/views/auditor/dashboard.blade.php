@@ -21,7 +21,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Total Transactions</p>
-                        <p class="text-2xl font-bold text-amber-400">324</p>
+                        <p class="text-2xl font-bold text-amber-400">{{ $totalTransactions }}</p>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Verified Transactions</p>
-                        <p class="text-2xl font-bold text-green-400">298</p>
+                        <p class="text-2xl font-bold text-green-400">{{ $verifiedTransactions }}</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Pending Verification</p>
-                        <p class="text-2xl font-bold text-yellow-400">26</p>
+                        <p class="text-2xl font-bold text-yellow-400">{{ $pendingTransactions }}</p>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Monthly Reports</p>
-                        <p class="text-2xl font-bold text-blue-400">12</p>
+                        <p class="text-2xl font-bold text-blue-400">{{ $monthlyReports }}</p>
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@
             <!-- Recent Audits -->
             <div class="lg:col-span-2 bg-gradient-to-br from-gray-800 to-gray-900 rounded-xl border border-amber-900 p-6">
                 <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-amber-400">Recent Audits</h2>
+                    <h2 class="text-xl font-bold text-amber-400">Recent Reports</h2>
                     <a href="{{ route('auditor.reports.index') }}" class="text-sm text-amber-400 hover:text-amber-300">View All</a>
                 </div>
                 <div class="overflow-x-auto">
@@ -86,34 +86,22 @@
                                 <th class="py-3 px-4 text-left text-gray-400">Date</th>
                                 <th class="py-3 px-4 text-left text-gray-400">Report</th>
                                 <th class="py-3 px-4 text-left text-gray-400">Status</th>
-                                <th class="py-3 px-4 text-left text-gray-400">Verified By</th>
+                                <th class="py-3 px-4 text-left text-gray-400">Created By</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse($recentReports as $report)
                             <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-15</td>
-                                <td class="py-3 px-4">January Financial Report</td>
+                                <td class="py-3 px-4">{{ $report->created_at->format('Y-m-d') }}</td>
+                                <td class="py-3 px-4">{{ $report->title ?? 'Financial Report' }}</td>
                                 <td class="py-3 px-4"><span class="px-2 py-1 bg-green-900/30 text-green-400 rounded text-xs">Verified</span></td>
-                                <td class="py-3 px-4">Auditor 1</td>
+                                <td class="py-3 px-4">{{ $report->user->name ?? 'System' }}</td>
                             </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-14</td>
-                                <td class="py-3 px-4">Transaction Review Q4</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-yellow-900/30 text-yellow-400 rounded text-xs">Pending</span></td>
-                                <td class="py-3 px-4">-</td>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="py-4 text-center text-gray-500">No recent reports</td>
                             </tr>
-                            <tr class="border-b border-gray-700 hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-12</td>
-                                <td class="py-3 px-4">Expense Verification</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-green-900/30 text-green-400 rounded text-xs">Verified</span></td>
-                                <td class="py-3 px-4">Auditor 2</td>
-                            </tr>
-                            <tr class="hover:bg-gray-750">
-                                <td class="py-3 px-4">2025-01-10</td>
-                                <td class="py-3 px-4">Cash Balance Review</td>
-                                <td class="py-3 px-4"><span class="px-2 py-1 bg-red-900/30 text-red-400 rounded text-xs">Issues Found</span></td>
-                                <td class="py-3 px-4">Auditor 1</td>
-                            </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>
@@ -126,40 +114,40 @@
                     <div>
                         <div class="flex justify-between mb-1">
                             <span class="text-gray-400">Verification Rate</span>
-                            <span class="text-amber-400">92%</span>
+                            <span class="text-amber-400">{{ $verificationRate }}%</span>
                         </div>
                         <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-amber-500 h-2 rounded-full" style="width: 92%"></div>
+                            <div class="bg-amber-500 h-2 rounded-full" style="width: {{ $verificationRate }}%"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between mb-1">
-                            <span class="text-gray-400">Accuracy Rate</span>
-                            <span class="text-amber-400">98%</span>
+                            <span class="text-gray-400">Total Reports</span>
+                            <span class="text-amber-400">{{ $monthlyReports }}</span>
                         </div>
                         <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-green-500 h-2 rounded-full" style="width: 98%"></div>
+                            <div class="bg-green-500 h-2 rounded-full" style="width: 100%"></div>
                         </div>
                     </div>
                     <div>
                         <div class="flex justify-between mb-1">
-                            <span class="text-gray-400">Avg. Verification Time</span>
-                            <span class="text-amber-400">2.4 days</span>
+                            <span class="text-gray-400">Total Transactions</span>
+                            <span class="text-amber-400">{{ $totalTransactions }}</span>
                         </div>
                         <div class="w-full bg-gray-700 rounded-full h-2">
-                            <div class="bg-blue-500 h-2 rounded-full" style="width: 75%"></div>
+                            <div class="bg-blue-500 h-2 rounded-full" style="width: 100%"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-6 space-y-3">
-                    <a href="{{ route('auditor.reports') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
+                    <a href="{{ route('auditor.reports.index') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Review Reports
                     </a>
-                    <a href="#" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    <a href="{{ route('bendahara.transactions.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Verify Transactions
                     </a>
-                    <a href="#" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    <a href="{{ route('bendahara.reports.create') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Generate Audit Report
                     </a>
                 </div>
