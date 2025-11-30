@@ -49,6 +49,8 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
     // Dashboard Bendahara
     Route::get('/bendahara/dashboard', [App\Http\Controllers\BendaharaDashboardController::class, 'index'])
         ->name('bendahara.dashboard');
+    Route::get('/bendahara/cash-flow', [App\Http\Controllers\BendaharaDashboardController::class, 'cashFlow'])
+        ->name('bendahara.cash-flow');
 
     // Transactions (resource)
     Route::prefix('bendahara')->name('bendahara.')->group(function () {

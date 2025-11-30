@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
@@ -10,6 +9,9 @@ use App\Models\Transaction;
 use App\Models\Receipt;
 use App\Models\CashBalance;
 use App\Models\Report;
+use Illuminate\Support\Facades\Hash;
+
+use Illuminate\Support\Facades\DB;
 
 class FinancialSeeder extends Seeder
 {
@@ -18,87 +20,94 @@ class FinancialSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create users with different roles
-        $admin = User::factory()->create([
-            'name' => 'Admin Keuangan',
-            'email' => 'admin@keuangan.com',
-            'role' => 'admin',
-        ]);
-        
-        $bendahara = User::factory()->create([
-            'name' => 'Bendahara',
-            'email' => 'bendahara@keuangan.com',
-            'role' => 'bendahara',
-        ]);
-        
-        $auditor = User::factory()->create([
-            'name' => 'Auditor',
-            'email' => 'auditor@keuangan.com',
-            'role' => 'auditor',
-        ]);
-        
-        // Create categories
-        $incomeCategory = Category::create([
-            'name' => 'Pendapatan Usaha',
-            'type' => 'income',
-            'description' => 'Pendapatan dari usaha atau penjualan'
-        ]);
-        
-        $expenseCategory = Category::create([
-            'name' => 'Biaya Operasional',
-            'type' => 'expense',
-            'description' => 'Biaya operasional bulanan'
-        ]);
-        
-        // Create receipt
-        $receipt = Receipt::create([
-            'receipt_number' => 'RCP-001',
-            'title' => 'Pembayaran Jasa',
-            'description' => 'Pembayaran jasa konsultasi bulan Januari',
-            'amount' => 5000000,
-            'issued_date' => now()->subDays(5),
-            'issued_by' => $bendahara->name,
-            'recipient_name' => 'PT. Maju Jaya',
-        ]);
-        
-        // Create transactions
-        Transaction::create([
-            'user_id' => $bendahara->id,
-            'category_id' => $incomeCategory->id,
-            'amount' => 10000000,
-            'description' => 'Pendapatan dari penjualan produk',
-            'type' => 'income',
-            'date' => now()->subDays(10),
-        ]);
-        
-        Transaction::create([
-            'user_id' => $bendahara->id,
-            'category_id' => $expenseCategory->id,
-            'amount' => 3000000,
-            'description' => 'Pembelian peralatan kantor',
-            'type' => 'expense',
-            'date' => now()->subDays(8),
-        ]);
-        
-        // Create cash balance
-        CashBalance::create([
-            'user_id' => $bendahara->id,
-            'balance' => 7000000,
-            'date' => now(),
-            'description' => 'Saldo kas terkini'
-        ]);
-        
-        // Create report
-        Report::create([
-            'user_id' => $admin->id,
-            'title' => 'Laporan Keuangan Bulan Januari',
-            'type' => 'monthly',
-            'period_start' => now()->startOfMonth(),
-            'period_end' => now()->endOfMonth(),
-            'total_income' => 10000000,
-            'total_expenses' => 3000000,
-            'net_income' => 7000000,
-            'content' => 'Laporan keuangan bulan Januari menunjukkan pendapatan sebesar 10 juta dan pengeluaran 3 juta, dengan laba bersih sebesar 7 juta.',
-        ]);
+        // Ambil user bendahara yang sudah dibuat oleh RoleSeeder
+        $bendahara = User::where('email', 'bendahara@example.com')->first();
+        $auditor = User::where('email', 'auditor@example.com')->first();
+
+        // 1. Buat Kategori Pemasukan dan Pengeluaran
+        $now = now();
+        $categories = [
+            ['name' => 'Iuran Kas', 'type' => 'pemasukan', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Sumbangan', 'type' => 'pemasukan', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Laba Usaha', 'type' => 'pemasukan', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Konsumsi Rapat', 'type' => 'pengeluaran', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Alat Tulis Kantor', 'type' => 'pengeluaran', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Biaya Transportasi', 'type' => 'pengeluaran', 'created_at' => $now, 'updated_at' => $now],
+            ['name' => 'Perlengkapan Acara', 'type' => 'pengeluaran', 'created_at' => $now, 'updated_at' => $now],
+        ];
+
+        DB::table('categories')->insert($categories);
+
+        // 2. Buat Transaksi
+        $iuranKas = Category::where('name', 'Iuran Kas')->first();
+        $konsumsiRapat = Category::where('name', 'Konsumsi Rapat')->first();
+        $sumbangan = Category::where('name', 'Sumbangan')->first();
+        $atk = Category::where('name', 'Alat Tulis Kantor')->first();
+
+        $transactions = [
+            [
+                'user_id' => $bendahara->id,
+                'category_id' => $iuranKas->id,
+                'amount' => 500000,
+                'description' => 'Iuran kas mingguan anggota',
+                'transaction_date' => now()->subDays(10),
+            ],
+            [
+                'user_id' => $bendahara->id,
+                'category_id' => $konsumsiRapat->id,
+                'amount' => -75000,
+                'description' => 'Beli snack untuk rapat mingguan',
+                'transaction_date' => now()->subDays(8),
+            ],
+            [
+                'user_id' => $bendahara->id,
+                'category_id' => $sumbangan->id,
+                'amount' => 250000,
+                'description' => 'Sumbangan dari donatur',
+                'transaction_date' => now()->subDays(5),
+            ],
+            [
+                'user_id' => $bendahara->id,
+                'category_id' => $atk->id,
+                'amount' => -50000,
+                'description' => 'Pembelian kertas dan pulpen',
+                'transaction_date' => now()->subDays(2),
+            ],
+        ];
+
+        foreach ($transactions as $trans) {
+            $transaction = Transaction::create($trans);
+
+            // 3. Buat Bukti Transaksi (Receipts) untuk setiap transaksi
+            Receipt::create([
+                'transaction_id' => $transaction->id,
+                'receipt_image_path' => 'path/to/dummy/receipt-' . $transaction->id . '.jpg', // Path gambar dummy
+            ]);
+        }
+
+        // 4. Inisialisasi atau Update Saldo Kas (CashBalance)
+        $totalBalance = Transaction::sum('amount');
+        CashBalance::updateOrCreate(
+            ['id' => 1], // Asumsi hanya ada satu baris untuk saldo kas
+            [
+                'balance' => $totalBalance,
+                'last_updated' => now(),
+            ]
+        );
+
+        // 5. Buat Laporan (Report)
+        if ($auditor) {
+            Report::create([
+                'generated_by' => $auditor->id,
+                'report_data' => json_encode([
+                    'start_date' => now()->subMonth()->startOfMonth(),
+                    'end_date' => now()->subMonth()->endOfMonth(),
+                    'total_income' => 800000,
+                    'total_expense' => -200000,
+                    'final_balance' => 600000,
+                    'summary' => 'Laporan keuangan bulan lalu.',
+                ]),
+            ]);
+        }
     }
 }

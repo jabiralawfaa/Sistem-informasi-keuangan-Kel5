@@ -135,7 +135,7 @@
                         No Receipt Available
                     </button>
                     @endif
-                    <a href="{{ route('bendahara.cash-balances.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                    <a href="{{ route('bendahara.cash-flow') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         View Cash Flow
                     </a>
                     <a href="{{ route('bendahara.transactions.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">

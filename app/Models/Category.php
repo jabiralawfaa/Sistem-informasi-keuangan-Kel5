@@ -9,8 +9,7 @@ class Category extends Model
 {
     protected $fillable = [
         'name',
-        'type', // 'income' or 'expense'
-        'description'
+        'type', // 'pemasukan' or 'pengeluaran'
     ];
 
     protected $casts = [
