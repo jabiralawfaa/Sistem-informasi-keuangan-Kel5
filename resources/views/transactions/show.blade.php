@@ -73,15 +73,31 @@
                 </div>
             </div>
 
-            <div class="mt-6 flex justify-end">
+            <div class="mt-6 flex justify-end space-x-3">
+                @if(Auth::user()->role !== 'guest')
+                @if($transaction->receipt_id)
+                <a href="{{ route('bendahara.receipts.print', $transaction->receipt_id) }}" target="_blank" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200">
+                    Print Receipt
+                </a>
+                @else
+                <a href="{{ route('bendahara.transactions.receipt', $transaction->id) }}" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200"
+                   onclick="return confirm('Generate receipt for this transaction?')">
+                    Generate Receipt
+                </a>
+                @endif
                 <form action="{{ route('bendahara.transactions.destroy', $transaction->id) }}" method="POST" class="inline">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition duration-200" 
+                    <button type="submit" class="px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-lg transition duration-200"
                             onclick="return confirm('Are you sure you want to delete this transaction?')">
                         Delete Transaction
                     </button>
                 </form>
+                @else
+                <div class="px-6 py-3 bg-gray-600 text-white rounded-lg">
+                    Guest access restricted
+                </div>
+                @endif
             </div>
         </div>
     </div>
