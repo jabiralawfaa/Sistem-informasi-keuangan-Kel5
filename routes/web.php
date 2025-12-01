@@ -1,27 +1,12 @@
 <?php
 
-<<<<<<< HEAD
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\AuditorDashboardController;
-use App\Http\Controllers\BendaharaDashboardController;
-use App\Http\Controllers\CashBalanceController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReceiptController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserRoleController;
-use App\Http\Controllers\HomeController;
-=======
-use App\Http\Controllers\ProfileController;
->>>>>>> 9ecfd83 (breeze update)
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 Route::get('/dashboard', [HomeController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
@@ -48,15 +33,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     });
 });
 
-
 // Bendahara routes
-Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->group(function () {
+Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor'])->group(function () {
 
-    // Dashboard Bendahara
     Route::get('/bendahara/dashboard', [App\Http\Controllers\BendaharaDashboardController::class, 'index'])
         ->name('bendahara.dashboard');
 
-    // Transactions (resource)
     Route::prefix('bendahara')->name('bendahara.')->group(function () {
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
@@ -65,7 +47,6 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
         Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
     });
 
-    // Tambahan action custom
     Route::get('/bendahara/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
         ->name('bendahara.reports.monthly');
 
@@ -76,9 +57,8 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
         ->name('bendahara.transactions.receipt');
 
     Route::get('/receipts/print/{receipt}', [ReceiptController::class, 'print'])
-    ->name('receipts.print');
+        ->name('receipts.print');
 });
-
 
 // Auditor routes
 Route::middleware(['auth', 'role-check', 'role:auditor'])->group(function () {
@@ -102,21 +82,13 @@ Route::middleware(['auth', 'role-check'])->group(function () {
 
 });
 
-
-Route::middleware(['auth', 'role-check'])->group(function () {
-=======
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Route Breeze dari branch remote
 Route::middleware('auth')->group(function () {
->>>>>>> 9ecfd83 (breeze update)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-<<<<<<< HEAD
 // Test email route
 Route::get('/test-email', function () {
     $details = [
@@ -132,9 +104,4 @@ Route::get('/test-email', function () {
     }
 });
 
-require __DIR__.'/auth.php';
-=======
->>>>>>> 081b149 (coba push)
-=======
-require __DIR__.'/auth.php';
->>>>>>> 9ecfd83 (breeze update)
+require __DIR__ . '/auth.php';
