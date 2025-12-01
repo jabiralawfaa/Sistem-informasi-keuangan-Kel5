@@ -60,12 +60,22 @@ class ReceiptController extends Controller
     }
 
     /**
-     * Display the specified receipt.
+     * Display the specified receipt or redirect if accessed incorrectly.
      */
     public function show(Receipt $receipt)
     {
         $amountInWords = $this->numberToWords($receipt->amount);
         return view('receipts.show', compact('receipt', 'amountInWords'));
+    }
+
+    /**
+     * Handle GET request for createForTransaction by redirecting to appropriate page.
+     */
+    public function getCreateForTransaction(Transaction $transaction)
+    {
+        // Redirect to the transaction show page if someone tries to access the POST route via GET
+        return redirect()->route('bendahara.transactions.show', $transaction->id)
+            ->with('error', 'Invalid method. Use the form to generate a receipt.');
     }
 
     /**
@@ -129,6 +139,11 @@ class ReceiptController extends Controller
      */
     public function createForTransaction(Transaction $transaction)
     {
+        // Ensure user can only create receipts for their own transactions
+        if ($transaction->user_id !== Auth::id()) {
+            abort(403);
+        }
+
         // Create a receipt based on a transaction
         $receiptNumber = 'RCT-' . Carbon::now()->format('Y') . '-' . str_pad(Receipt::count() + 1, 5, '0', STR_PAD_LEFT);
 
@@ -138,7 +153,7 @@ class ReceiptController extends Controller
             'description' => $transaction->description,
             'amount' => $transaction->amount,
             'issued_date' => Carbon::now(),
-            'issued_by' => $transaction->user->name ?? 'System',
+            'issued_by' => Auth::user()->name ?? 'System',
             'recipient_name' => 'Customer',
             'recipient_address' => 'N/A',
         ]);
@@ -146,7 +161,7 @@ class ReceiptController extends Controller
         // Link the receipt to the transaction
         $transaction->update(['receipt_id' => $receipt->id]);
 
-        return redirect()->route('receipts.show', $receipt)->with('success', 'Receipt generated for transaction.');
+        return redirect()->route('bendahara.receipts.show', $receipt->id)->with('success', 'Receipt generated for transaction.');
     }
 
     /**

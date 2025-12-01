@@ -84,11 +84,28 @@
                                             <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
                                         </svg>
                                     </a>
+                                    @if(Auth::user()->role !== 'guest')
                                     <a href="{{ route('bendahara.transactions.edit', $transaction->id) }}" class="text-amber-400 hover:text-amber-300 ml-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
                                     </a>
+                                    @if($transaction->receipt_id)
+                                    <a href="{{ route('bendahara.receipts.print', $transaction->receipt_id) }}" target="_blank" class="text-green-400 hover:text-green-300 ml-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5 4v1H4a2 2 0 00-2 2v6a2 2 0 002 2h1v3a2 2 0 002 2h6a2 2 0 002-2v-3h1a2 2 0 002-2V6a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v1h6V4zm0 2H7v1h6V6zm0 2H7v1h6V8zm0 2H7v1h6v-1z" clip-rule="evenodd" />
+                                        </svg>
+                                    </a>
+                                    @else
+                                    <form method="POST" action="{{ route('bendahara.transactions.receipt', $transaction->id) }}" class="inline" onsubmit="return confirm('Generate receipt for this transaction?')">
+                                        @csrf
+                                        <button type="submit" class="text-green-400 hover:text-green-300 ml-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    @endif
                                     <form action="{{ route('bendahara.transactions.destroy', $transaction->id) }}" method="POST" class="inline ml-2">
                                         @csrf
                                         @method('DELETE')
@@ -98,6 +115,14 @@
                                             </svg>
                                         </button>
                                     </form>
+                                    @else
+                                    <div class="text-gray-500 ml-2" title="Edit access restricted">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

@@ -87,6 +87,7 @@
                                 <th class="py-3 px-4 text-left text-gray-400">Description</th>
                                 <th class="py-3 px-4 text-left text-gray-400">Type</th>
                                 <th class="py-3 px-4 text-left text-gray-400">Amount</th>
+                                <th class="py-3 px-4 text-left text-gray-400">Receipt</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -106,6 +107,25 @@
                                         <span class="text-green-400">+Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
                                     @else
                                         <span class="text-red-400">-Rp {{ number_format($transaction->amount, 0, ',', '.') }}</span>
+                                    @endif
+                                </td>
+                                <td class="py-3 px-4">
+                                    @if($transaction->receipt_id)
+                                        <a href="{{ route('bendahara.receipts.print', $transaction->receipt_id) }}" target="_blank" class="text-green-400 hover:text-green-300">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M5 4v1H4a2 2 0 00-2 2v6a2 2 0 002 2h1v3a2 2 0 002 2h6a2 2 0 002-2v-3h1a2 2 0 002-2V6a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v1h6V4zm0 2H7v1h6V6zm0 2H7v1h6V8zm0 2H7v1h6v-1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </a>
+                                    @else
+                                        <form method="POST" action="{{ route('bendahara.transactions.receipt', $transaction->id) }}" class="inline"
+                                              onsubmit="return confirm('Generate receipt for this transaction?')">
+                                            @csrf
+                                            <button type="submit" class="text-gray-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                     @endif
                                 </td>
                             </tr>

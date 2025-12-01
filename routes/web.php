@@ -45,19 +45,21 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor'])->group
         Route::resource('reports', ReportController::class);
         Route::resource('cash-balances', CashBalanceController::class);
         Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
+
+        // Add GET route for transaction receipt creation to redirect appropriately
+        Route::get('/transactions/{transaction}/receipt', function (\App\Models\Transaction $transaction) {
+            return redirect()->route('bendahara.transactions.show', $transaction->id)
+                ->with('error', 'Use the form to generate a receipt for this transaction.');
+        })->name('transactions.receipt.get');
+
+        // Keep the POST route for creating receipt from transaction
+        Route::post('/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])
+            ->name('transactions.receipt');
+
+        // Add print route for receipts
+        Route::get('/receipts/{receipt}/print', [ReceiptController::class, 'print'])
+            ->name('receipts.print');
     });
-
-    Route::get('/bendahara/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
-        ->name('bendahara.reports.monthly');
-
-    Route::get('/bendahara/receipts/{receipt}/print', [ReceiptController::class, 'print'])
-        ->name('bendahara.receipts.print');
-
-    Route::post('/bendahara/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])
-        ->name('bendahara.transactions.receipt');
-
-    Route::get('/receipts/print/{receipt}', [ReceiptController::class, 'print'])
-        ->name('receipts.print');
 });
 
 // Auditor routes
