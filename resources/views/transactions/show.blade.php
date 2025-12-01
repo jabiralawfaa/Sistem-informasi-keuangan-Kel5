@@ -80,10 +80,13 @@
                     Print Receipt
                 </a>
                 @else
-                <a href="{{ route('bendahara.transactions.receipt', $transaction->id) }}" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200"
-                   onclick="return confirm('Generate receipt for this transaction?')">
-                    Generate Receipt
-                </a>
+                <form method="POST" action="{{ route('bendahara.transactions.receipt', $transaction->id) }}" class="inline"
+                      onsubmit="return confirm('Generate receipt for this transaction?')">
+                    @csrf
+                    <button type="submit" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200">
+                        Generate Receipt
+                    </button>
+                </form>
                 @endif
                 <form action="{{ route('bendahara.transactions.destroy', $transaction->id) }}" method="POST" class="inline">
                     @csrf
