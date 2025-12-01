@@ -16,8 +16,8 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         // Update default user to admin if they exist
-        DB::table('users')->where('id', 3)->update([
-            'role' => 'admin',
+        DB::table('users')->where('id', 4)->update([
+            'role' => 'guest',
             'updated_at' => Carbon::now()
         ]);
 
