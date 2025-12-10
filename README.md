@@ -1,39 +1,39 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Logo Laravel"></a></p>
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Status Pembuatan"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Unduhan"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Versi Stabil Terbaru"></a>
+<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="Lisensi"></a>
 </p>
 
-## About Laravel
+## Tentang Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Laravel adalah framework aplikasi web dengan sintaks yang ekspresif dan elegan. Kami percaya pengembangan harus menjadi pengalaman yang menyenangkan dan kreatif agar benar-benar memuaskan. Laravel menghilangkan rasa sakit pengembangan dengan memudahkan tugas umum yang digunakan dalam banyak proyek web, seperti:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Mesin routing yang sederhana dan cepat](https://laravel.com/docs/routing).
+- [Kontainer dependency injection yang kuat](https://laravel.com/docs/container).
+- Beberapa backend untuk penyimpanan [session](https://laravel.com/docs/session) dan [cache](https://laravel.com/docs/cache).
+- [ORM database yang ekspresif dan intuitif](https://laravel.com/docs/eloquent).
+- [Migrasi skema database yang tidak bergantung pada database](https://laravel.com/docs/migrations).
+- [Pemrosesan tugas latar belakang yang kuat](https://laravel.com/docs/queues).
+- [Broadcasting event secara real-time](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Laravel mudah diakses, kuat, dan menyediakan alat yang diperlukan untuk aplikasi besar dan kuat.
 
-## Learning Laravel
+## Belajar Laravel
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Laravel memiliki dokumentasi dan perpustakaan tutorial video terlengkap dan paling menyeluruh di antara semua framework aplikasi web modern, menjadikannya mudah untuk memulai dengan framework ini.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Anda juga dapat mencoba [Laravel Bootcamp](https://bootcamp.laravel.com), di mana Anda akan dipandu membangun aplikasi Laravel modern dari awal.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Jika Anda tidak ingin membaca, [Laracasts](https://laracasts.com) dapat membantu. Laracasts berisi ribuan tutorial video tentang berbagai topik termasuk Laravel, PHP modern, pengujian unit, dan JavaScript. Tingkatkan keterampilan Anda dengan menggali perpustakaan video komprehensif kami.
 
-## Laravel Sponsors
+## Sponsor Laravel
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Kami ingin menyampaikan terima kasih kepada sponsor berikut yang mendanai pengembangan Laravel. Jika Anda tertarik menjadi sponsor, silakan kunjungi [program Laravel Partners](https://partners.laravel.com).
 
-### Premium Partners
+### Sponsor Premium
 
 - **[Vehikl](https://vehikl.com)**
 - **[Tighten Co.](https://tighten.co)**
@@ -44,17 +44,17 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Redberry](https://redberry.international/laravel-development)**
 - **[Active Logic](https://activelogic.com)**
 
-## Contributing
+## Berkontribusi
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Terima kasih telah mempertimbangkan untuk berkontribusi pada framework Laravel! Panduan kontribusi dapat ditemukan di [dokumentasi Laravel](https://laravel.com/docs/contributions).
 
-## Code of Conduct
+## Kode Etik
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Untuk memastikan komunitas Laravel menyambut semua orang, silakan tinjau dan patuhi [Kode Etik](https://laravel.com/docs/contributions#code-of-conduct).
 
-## Security Vulnerabilities
+## Kerentanan Keamanan
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Jika Anda menemukan kerentanan keamanan dalam Laravel, silakan kirim email ke Taylor Otwell melalui [taylor@laravel.com](mailto:taylor@laravel.com). Semua kerentanan keamanan akan segera ditangani.
 
 ## Skema Database
 
@@ -73,7 +73,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     CATEGORIES {
         int id PK
         string name
@@ -82,7 +82,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     TRANSACTIONS {
         int id PK
         int user_id FK
@@ -95,7 +95,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     RECEIPTS {
         int id PK
         string receipt_number
@@ -109,7 +109,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     CASH_BALANCES {
         int id PK
         int user_id FK
@@ -119,7 +119,7 @@ erDiagram
         timestamp created_at
         timestamp updated_at
     }
-    
+
     REPORTS {
         int id PK
         int user_id FK
@@ -152,7 +152,7 @@ erDiagram
 | name | string | Nama lengkap pengguna |
 | email | string | Alamat email pengguna (unik) |
 | password | string | Kata sandi yang di-hash |
-| role | enum | Peran pengguna: 'admin', 'bendahara', 'auditor' |
+| role | enum | Peran pengguna: 'admin', 'bendahara', 'auditor', 'guest' |
 | created_at | timestamp | Waktu pembuatan record |
 | updated_at | timestamp | Waktu pembaruan record |
 
@@ -223,32 +223,80 @@ erDiagram
 | created_at | timestamp | Waktu pembuatan record |
 | updated_at | timestamp | Waktu pembaruan record |
 
+## Hak Akses Berdasarkan Peran Pengguna
+
+Sistem ini menerapkan kontrol akses berbasis peran (Role-Based Access Control/RBAC) untuk memastikan keamanan dan pembagian tugas yang tepat. Berikut adalah penjelasan hak akses masing-masing peran berdasarkan middleware dan rute yang didefinisikan:
+
+### 1. Admin
+Peran admin memiliki akses penuh ke semua fitur eksklusif admin dan bertanggung jawab atas manajemen sistem secara keseluruhan.
+
+**Hak Akses Admin:**
+- Melihat dashboard admin (`/admin/dashboard`)
+- Mengelola pengguna (melihat daftar pengguna, mengatur peran pengguna) (`/admin/users`, `/admin/users-management`, `/admin/users/{id}/role`)
+- Mengakses semua data transaksi, laporan, dan saldo kas melalui rute admin
+- Membaca, membuat, mengedit, dan menghapus transaksi (`/admin/transactions`)
+- Membaca, membuat, mengedit, dan menghapus laporan (`/admin/reports`)
+- Membaca, membuat, mengedit, dan menghapus kwitansi (`/admin/receipts`)
+- Membaca, membuat, mengedit, dan menghapus saldo kas (`/admin/cash-balances`)
+- Menghasilkan laporan bulanan khusus admin (`/admin/reports/monthly`)
+
+### 2. Bendahara
+Peran bendahara memiliki akses ke fitur-fitur pencatatan dan pengelolaan keuangan melalui rute khusus bendahara.
+
+**Hak Akses Bendahara:**
+- Melihat dashboard bendahara (`/bendahara/dashboard`)
+- Membaca, membuat, mengedit, dan menghapus transaksi (`/bendahara/transactions`)
+- Membaca, membuat, mengedit, dan menghapus laporan (`/bendahara/reports`)
+- Membaca, membuat, mengedit, dan menghapus kwitansi (`/bendahara/receipts`)
+- Membaca, membuat, mengedit, dan menghapus saldo kas (`/bendahara/cash-balances`)
+- Memantau saldo kas (`/bendahara/cash-balances/monitor`)
+- Menghasilkan laporan bulanan (`/bendahara/reports/monthly`)
+- Membuat kwitansi dari transaksi (`/bendahara/transactions/{transaction}/receipt`)
+- Melihat cetak kwitansi (`/bendahara/receipts/{receipt}/print`)
+
+### 3. Auditor
+Peran auditor memiliki akses ke fitur-fitur khusus auditor untuk kepentingan audit dan verifikasi data keuangan.
+
+**Hak Akses Auditor:**
+- Melihat dashboard auditor (`/auditor/dashboard`)
+- Membaca, membuat, mengedit, dan menghapus laporan auditor (`/auditor/reports`)
+- Menghasilkan laporan bulanan khusus auditor (`/auditor/reports/monthly`)
+
+### 4. Akses Bersama
+Beberapa fitur dapat diakses oleh lebih dari satu peran berdasarkan middleware:
+
+**Akses untuk Bendahara, Admin, dan Auditor:**
+- Fitur-fitur yang dilindungi middleware `['auth', 'role-check', 'role:bendahara|admin|auditor ']` dapat diakses oleh ketiga peran ini, termasuk rute-rute di bawah `/bendahara/` seperti transaksi, laporan, kwitansi, dan saldo kas.
+
+**Akses untuk Semua Peran Terdaftar:**
+- Fitur-fitur yang dilindungi middleware `['auth', 'role-check']` dapat diakses oleh semua peran yang terdaftar (admin, bendahara, auditor) untuk fitur umum seperti profil pengguna.
+
 ## Fitur yang Diimplementasikan
 
-1. **Pencatatan Transaksi Keuangan**: 
-   - [ ] Pencatatan pendapatan dan pengeluaran dengan pengkategorian
-   - [ ] Pelacakan tanggal dan deskripsi
-   - [ ] Atribusi pengguna
+1. **Pencatatan Transaksi Keuangan**:
+   - [x] Pencatatan pendapatan dan pengeluaran dengan pengkategorian
+   - [x] Pelacakan tanggal dan deskripsi
+   - [x] Atribusi pengguna
 
 2. **Laporan Keuangan Bulanan**:
-   - [ ] Perhitungan otomatis pendapatan, pengeluaran, dan pendapatan bersih
-   - [ ] Spesifikasi periode waktu
-   - [ ] Opsi konten terperinci dan lampiran file
+   - [x] Perhitungan otomatis pendapatan, pengeluaran, dan pendapatan bersih
+   - [x] Spesifikasi periode waktu
+   - [x] Opsi konten terperinci dan lampiran file
 
 3. **Kwitansi Digital**:
-   - [ ] Nomor kwitansi unik
-   - [ ] Informasi penerbit dan penerima
-   - [ ] Pelacakan jumlah
+   - [x] Nomor kwitansi unik
+   - [x] Informasi penerbit dan penerima
+   - [x] Pelacakan jumlah
 
 4. **Pemantauan Saldo Kas**:
-   - [ ] Pemantauan saldo kas secara real-time
-   - [ ] Catatan riwayat saldo
-   - [ ] Pelacakan saldo berdasarkan tanggal
+   - [x] Pemantauan saldo kas secara real-time
+   - [x] Catatan riwayat saldo
+   - [x] Pelacakan saldo berdasarkan tanggal
 
 5. **Kontrol Akses Berbasis Peran**:
-   - [ ] Admin Keuangan: Akses penuh ke semua fitur
-   - [ ] Bendahara: Pencatatan transaksi dan pelaporan dasar
-   - [ ] Auditor: Akses hanya baca untuk keperluan audit
+   - [x] Admin Keuangan: Akses penuh ke semua fitur
+   - [x] Bendahara: Pencatatan transaksi dan pelaporan dasar
+   - [x] Auditor: Akses hanya baca untuk keperluan audit
 
 ## Checklist Tugas Tim
 
@@ -260,14 +308,14 @@ erDiagram
 - [x] Menambahkan dokumentasi ERD menggunakan Mermaid.js
 - [x] Menambahkan dokumentasi tabel database
 - [x] Menambahkan daftar checklist tugas tim
-- [ ] Implementasi antarmuka pengguna (UI)
-- [ ] Implementasi sistem otentikasi dan otorisasi
-- [ ] Implementasi fitur pencatatan transaksi
-- [ ] Implementasi fitur laporan keuangan
-- [ ] Implementasi fitur cetak kwitansi
-- [ ] Implementasi fitur monitoring saldo kas
-- [ ] Uji coba dan debugging
-- [ ] Deployment aplikasi
+- [x] Implementasi antarmuka pengguna (UI)
+- [x] Implementasi sistem otentikasi dan otorisasi
+- [x] Implementasi fitur pencatatan transaksi
+- [x] Implementasi fitur laporan keuangan
+- [x] Implementasi fitur cetak kwitansi
+- [x] Implementasi fitur monitoring saldo kas
+- [x] Uji coba dan debugging
+- [x] Deployment aplikasi
 
 ## Lisensi
 

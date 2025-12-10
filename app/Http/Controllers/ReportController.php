@@ -16,9 +16,17 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $reports = Report::where('user_id', Auth::id())
-            ->orderBy('period_end', 'desc')
-            ->paginate(10);
+        $user = Auth::user();
+
+        // Admin and auditor can see all reports, others only see their own
+        if ($user->role === 'admin' || $user->role === 'auditor') {
+            $reports = Report::orderBy('period_end', 'desc')
+                ->paginate(10);
+        } else {
+            $reports = Report::where('user_id', Auth::id())
+                ->orderBy('period_end', 'desc')
+                ->paginate(10);
+        }
 
         return view('reports.index', compact('reports'));
     }
@@ -41,6 +49,8 @@ class ReportController extends Controller
             'type' => 'required|in:monthly,quarterly,annual',
             'period_start' => 'required|date',
             'period_end' => 'required|date|after_or_equal:period_start',
+            'content' => 'nullable|string',
+            'file_path' => 'nullable|file|mimes:pdf,doc,docx,xls,xlsx,txt|max:10240', // max 10MB
         ]);
 
         // Calculate financial data for the period
@@ -52,6 +62,20 @@ class ReportController extends Controller
         $totalExpenses = $transactions->where('type', 'expense')->sum('amount');
         $netIncome = $totalIncome - $totalExpenses;
 
+        // Handle file upload if exists
+        $filePath = null;
+        if ($request->hasFile('file_path')) {
+            $file = $request->file('file_path');
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $filePath = $file->storeAs('reports', $fileName, 'public');
+        }
+
+        // For auditor, use the content they provided, otherwise generate from transactions
+        $content = $request->content;
+        if (Auth::user()->role !== 'auditor') {
+            $content = $this->generateReportContent($request->period_start, $request->period_end, $transactions, $totalIncome, $totalExpenses, $netIncome);
+        }
+
         $report = Report::create([
             'user_id' => Auth::id(),
             'title' => $request->title,
@@ -61,10 +85,23 @@ class ReportController extends Controller
             'total_income' => $totalIncome,
             'total_expenses' => $totalExpenses,
             'net_income' => $netIncome,
-            'content' => $this->generateReportContent($request->period_start, $request->period_end, $transactions, $totalIncome, $totalExpenses, $netIncome),
+            'content' => $content,
+            'file_path' => $filePath,
         ]);
 
-        return redirect()->route('reports.show', $report)->with('success', 'Report generated successfully.');
+        // Determine the appropriate route to redirect based on the current route
+        $currentRoute = request()->route()->getName();
+        $redirectRoute = 'reports.show'; // default
+
+        if (str_starts_with($currentRoute, 'admin.')) {
+            $redirectRoute = 'admin.reports.show';
+        } elseif (str_starts_with($currentRoute, 'auditor.')) {
+            $redirectRoute = 'auditor.reports.show';
+        } elseif (str_starts_with($currentRoute, 'bendahara.')) {
+            $redirectRoute = 'bendahara.reports.show';
+        }
+
+        return redirect()->route($redirectRoute, $report)->with('success', 'Report generated successfully.');
     }
 
     /**
@@ -72,8 +109,12 @@ class ReportController extends Controller
      */
     public function show(Report $report)
     {
-        // Ensure user can only view their own reports
-        if ($report->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow users to view their own reports
+        // Also allow auditors to view reports (for audit purposes)
+        // Also allow admins to view all reports
+        if ($report->user_id !== Auth::id() && $user->role !== 'auditor' && $user->role !== 'admin') {
             abort(403);
         }
 
@@ -149,8 +190,20 @@ class ReportController extends Controller
             ->where('period_start', $currentMonthStart)
             ->first();
 
+        // Determine the appropriate route to redirect based on the current route
+        $currentRoute = request()->route()->getName();
+        $redirectRoute = 'reports.show'; // default
+
+        if (str_starts_with($currentRoute, 'admin.')) {
+            $redirectRoute = 'admin.reports.show';
+        } elseif (str_starts_with($currentRoute, 'auditor.')) {
+            $redirectRoute = 'auditor.reports.show';
+        } elseif (str_starts_with($currentRoute, 'bendahara.')) {
+            $redirectRoute = 'bendahara.reports.show';
+        }
+
         if ($existingReport) {
-            return redirect()->route('reports.show', $existingReport)
+            return redirect()->route($redirectRoute, $existingReport)
                 ->with('info', 'Monthly report for this period already exists.');
         }
 
@@ -175,6 +228,6 @@ class ReportController extends Controller
             'content' => $this->generateReportContent($currentMonthStart, $currentMonthEnd, $transactions, $totalIncome, $totalExpenses, $netIncome),
         ]);
 
-        return redirect()->route('reports.show', $report)->with('success', 'Monthly report generated successfully.');
+        return redirect()->route($redirectRoute, $report)->with('success', 'Monthly report generated successfully.');
     }
 }

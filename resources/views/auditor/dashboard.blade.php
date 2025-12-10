@@ -144,11 +144,8 @@
                     <a href="{{ route('auditor.reports.index') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Review Reports
                     </a>
-                    <a href="{{ route('bendahara.transactions.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
-                        Verify Transactions
-                    </a>
-                    <a href="{{ route('bendahara.reports.create') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
-                        Generate Audit Report
+                    <a href="{{ route('auditor.reports.monthly') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
+                        Generate Monthly Report
                     </a>
                 </div>
             </div>

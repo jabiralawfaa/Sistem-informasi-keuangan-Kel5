@@ -8,12 +8,28 @@
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-amber-400">Financial Reports</h1>
             <div class="flex space-x-3">
-                <a href="{{ route('bendahara.reports.monthly') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
-                    Generate Monthly Report
-                </a>
-                <a href="{{ route('bendahara.reports.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
-                    New Report
-                </a>
+                @if(Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.reports.monthly') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                        Generate Monthly Report
+                    </a>
+                    <a href="{{ route('admin.reports.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                        New Report
+                    </a>
+                @elseif(Auth::user()->role === 'auditor')
+                    <a href="{{ route('auditor.reports.monthly') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                        Generate Monthly Report
+                    </a>
+                    <a href="{{ route('auditor.reports.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                        New Report
+                    </a>
+                @else
+                    <a href="{{ route('bendahara.reports.monthly') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                        Generate Monthly Report
+                    </a>
+                    <a href="{{ route('bendahara.reports.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                        New Report
+                    </a>
+                @endif
             </div>
         </div>
 
@@ -69,7 +85,13 @@
                             </td>
                             <td class="py-3 px-4">
                                 <div class="flex space-x-2">
-                                    <a href="{{ route('bendahara.reports.show', $report) }}" class="text-blue-400 hover:text-blue-300">
+                                    @if(Auth::user()->role === 'admin')
+                                        <a href="{{ route('admin.reports.show', $report) }}" class="text-blue-400 hover:text-blue-300">
+                                    @elseif(Auth::user()->role === 'auditor')
+                                        <a href="{{ route('auditor.reports.show', $report) }}" class="text-blue-400 hover:text-blue-300">
+                                    @else
+                                        <a href="{{ route('bendahara.reports.show', $report) }}" class="text-blue-400 hover:text-blue-300">
+                                    @endif
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                                             <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
@@ -86,7 +108,14 @@
                         @empty
                         <tr>
                             <td colspan="7" class="py-8 px-4 text-center text-gray-500">
-                                No reports found. <a href="{{ route('bendahara.reports.create') }}" class="text-amber-400 hover:text-amber-300">Generate your first report</a>.
+                                No reports found.
+                                @if(Auth::user()->role === 'admin')
+                                    <a href="{{ route('admin.reports.create') }}" class="text-amber-400 hover:text-amber-300">Generate your first report</a>.
+                                @elseif(Auth::user()->role === 'auditor')
+                                    <a href="{{ route('auditor.reports.create') }}" class="text-amber-400 hover:text-amber-300">Generate your first report</a>.
+                                @else
+                                    <a href="{{ route('bendahara.reports.create') }}" class="text-amber-400 hover:text-amber-300">Generate your first report</a>.
+                                @endif
                             </td>
                         </tr>
                         @endforelse

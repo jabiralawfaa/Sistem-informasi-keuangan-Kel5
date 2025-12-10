@@ -55,6 +55,8 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
         Route::resource('reports', ReportController::class);
+        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
+            ->name('reports.monthly');
         Route::resource('cash-balances', CashBalanceController::class);
         Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
 
