@@ -7,7 +7,7 @@
     <div class="container mx-auto px-4 py-8">
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-amber-400">Cash Balance Monitor</h1>
-            <a href="{{ route('cash_balances.index') }}" class="text-amber-400 hover:text-amber-300">
+            <a href="{{ route('bendahara.cash-balances.index') }}" class="text-amber-400 hover:text-amber-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>

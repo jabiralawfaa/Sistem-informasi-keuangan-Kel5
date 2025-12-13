@@ -57,8 +57,10 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
         Route::resource('reports', ReportController::class);
         Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
             ->name('reports.monthly');
-        Route::resource('cash-balances', CashBalanceController::class);
+        
         Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
+        Route::resource('cash-balances', CashBalanceController::class);
+        
 
         // Add GET route for transaction receipt creation to redirect appropriately
         Route::get('/transactions/{transaction}/receipt', function (\App\Models\Transaction $transaction) {

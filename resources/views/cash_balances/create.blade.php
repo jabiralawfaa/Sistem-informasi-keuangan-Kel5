@@ -8,7 +8,7 @@
         <div class="max-w-2xl mx-auto">
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-amber-400">Record Cash Balance</h1>
-                <a href="{{ route('cash_balances.index') }}" class="text-amber-400 hover:text-amber-300">
+                <a href="{{ route('bendahara.cash-balances.index') }}" class="text-amber-400 hover:text-amber-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
@@ -22,7 +22,7 @@
                     <p class="text-sm text-gray-400 mt-2">This is the balance calculated from your income and expense transactions</p>
                 </div>
 
-                <form action="{{ route('cash_balances.store') }}" method="POST">
+                <form action="{{ route('bendahara.cash-balances.store') }}" method="POST">
                     @csrf
                     
                     <div class="mb-6">
@@ -72,7 +72,7 @@
                     </div>
                     
                     <div class="flex justify-end space-x-4">
-                        <a href="{{ route('cash_balances.index') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                        <a href="{{ route('bendahara.cash-balances.index') }}" class="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
                             Cancel
                         </a>
                         <button type="submit" class="px-6 py-3 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
