@@ -46,13 +46,19 @@ class BendaharaDashboardController extends Controller
         // Latest receipt
         $latestReceipt = Receipt::latest()->first();
 
+        $transactions = Transaction::where('user_id', Auth::id())
+            ->with('category')
+            ->orderBy('date', 'desc')
+            ->paginate(10);
+
         return view('bendahara.dashboard', compact(
             'totalIncome',
             'totalExpenses', 
             'calculatedCashBalance',
             'transactionsThisMonth',
             'recentTransactions',
-            'latestReceipt'
+            'latestReceipt',
+            'transactions'
         ));
     }
 }

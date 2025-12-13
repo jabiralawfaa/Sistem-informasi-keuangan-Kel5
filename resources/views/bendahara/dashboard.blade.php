@@ -51,7 +51,7 @@
                     </div>
                     <div>
                         <p class="text-gray-400">Cash Balance</p>
-                        <p class="text-2xl font-bold text-amber-400">Rp {{ number_format($calculatedCashBalance, 0, ',', '.') }}</p>
+                        <p class="text-2xl font-bold text-amber-400">Rp {{ number_format($transactions->where('type', 'income')->sum('amount') - $transactions->where('type', 'expense')->sum('amount'), 0, ',', '.') }}</p>
                     </div>
                 </div>
             </div>
