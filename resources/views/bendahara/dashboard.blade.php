@@ -146,7 +146,7 @@
                     <a href="{{ route('bendahara.transactions.create') }}" class="block w-full text-center px-4 py-3 bg-amber-600 hover:bg-amber-700 rounded-lg transition duration-200 text-white font-medium">
                         Add Transaction
                     </a>
-                    @if ($latestReceipt)
+                    <!-- @if ($latestReceipt)
                     <a href="{{ route('bendahara.receipts.print', $latestReceipt->id) }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         Print Receipt
                     </a>
@@ -154,7 +154,7 @@
                     <button disabled class="block w-full text-center px-4 py-3 bg-gray-700 opacity-50 rounded-lg">
                         No Receipt Available
                     </button>
-                    @endif
+                    @endif -->
                     <a href="{{ route('bendahara.cash-balances.index') }}" class="block w-full text-center px-4 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg transition duration-200 text-amber-400 font-medium">
                         View Cash Flow
                     </a>

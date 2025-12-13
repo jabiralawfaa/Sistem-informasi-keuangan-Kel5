@@ -45,7 +45,7 @@ class BendaharaDashboardController extends Controller
         
         // Latest receipt
         $latestReceipt = Receipt::latest()->first();
-        
+
         return view('bendahara.dashboard', compact(
             'totalIncome',
             'totalExpenses', 

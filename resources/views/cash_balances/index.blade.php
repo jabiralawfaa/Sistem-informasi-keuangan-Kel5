@@ -8,10 +8,10 @@
         <div class="flex justify-between items-center mb-8">
             <h1 class="text-3xl font-bold text-amber-400">Cash Balance Monitoring</h1>
             <div class="flex space-x-3">
-                <a href="{{ route('cash_balances.monitor') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                <a href="{{ route('bendahara.cash-balances.monitor') }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
                     Monitor Balance
                 </a>
-                <a href="{{ route('cash_balances.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                <a href="{{ route('bendahara.cash-balances.create') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
                     Record Balance
                 </a>
             </div>
@@ -58,18 +58,18 @@
                             <td class="py-3 px-4">{{ $balance->description ?: 'N/A' }}</td>
                             <td class="py-3 px-4">
                                 <div class="flex space-x-2">
-                                    <a href="{{ route('cash_balances.show', $balance) }}" class="text-blue-400 hover:text-blue-300">
+                                    <a href="{{ route('bendahara.cash-balances.show', $balance) }}" class="text-blue-400 hover:text-blue-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
                                             <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
                                         </svg>
                                     </a>
-                                    <a href="{{ route('cash_balances.edit', $balance) }}" class="text-amber-400 hover:text-amber-300">
+                                    <a href="{{ route('bendahara.cash-balances.edit', $balance) }}" class="text-amber-400 hover:text-amber-300">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
                                         </svg>
                                     </a>
-                                    <form action="{{ route('cash_balances.destroy', $balance) }}" method="POST" class="inline">
+                                    <form action="{{ route('bendahara.cash-balances.destroy', $balance) }}" method="POST" class="inline">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-400 hover:text-red-300" onclick="return confirm('Are you sure you want to delete this balance record?')">
@@ -84,7 +84,7 @@
                         @empty
                         <tr>
                             <td colspan="4" class="py-8 px-4 text-center text-gray-500">
-                                No balance records found. <a href="{{ route('cash_balances.create') }}" class="text-amber-400 hover:text-amber-300">Record your first balance</a>.
+                                No balance records found. <a href="{{ route('bendahara.cash-balances.create') }}" class="text-amber-400 hover:text-amber-300">Record your first balance</a>.
                             </td>
                         </tr>
                         @endforelse
