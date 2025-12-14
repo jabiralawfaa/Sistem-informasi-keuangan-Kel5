@@ -150,42 +150,50 @@ document.addEventListener('DOMContentLoaded', function() {
     roleOptions.forEach(option => {
         option.addEventListener('click', function() {
             const newRole = this.getAttribute('data-role');
-            
-            // Update the form action and submit
-            roleForm.action = `/admin/users/${selectedUserId}/role`;
-            roleForm.querySelector('input[name="_token"]').value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-            
-            // Create and send AJAX request
-            fetch(roleForm.action, {
-                method: 'PUT',
+
+            // Create and send AJAX request with proper CSRF token and POST method for InfinityFree compatibility
+            fetch(`/admin/users/${selectedUserId}/role`, {
+                method: 'POST', // Changed to POST for better compatibility with shared hosting
                 headers: {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                     'X-HTTP-Method-Override': 'PUT'
                 },
                 body: JSON.stringify({
-                    role: newRole
+                    role: newRole,
+                    _method: 'PUT' // Explicitly include method override in payload
                 })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    // If response is not OK, throw an error
+                    if (response.status === 419) {
+                        // CSRF token mismatch
+                        throw new Error('Session expired. Please refresh the page and try again.');
+                    }
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     // Update the role tag in the table
                     document.querySelectorAll(`[data-user-id="${selectedUserId}"]`).forEach(element => {
                         if (element.classList.contains('role-tag')) {
                             element.textContent = newRole.charAt(0).toUpperCase() + newRole.slice(1);
+                            element.setAttribute('data-current-role', newRole);
                         }
                     });
-                    
-                    alert('Role updated successfully!');
+
+                    alert(data.message || 'Role updated successfully!');
                     modal.classList.add('hidden');
                 } else {
-                    alert('Error updating role');
+                    alert(data.message || 'Error updating role');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Error updating role');
+                alert('Error updating role: ' + error.message);
             });
         });
     });

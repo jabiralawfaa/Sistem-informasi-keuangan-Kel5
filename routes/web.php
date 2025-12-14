@@ -30,6 +30,7 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         Route::get('/users', [App\Http\Controllers\UserRoleController::class, 'index'])->name('users');
         Route::put('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role');
+        Route::post('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role-post');
         Route::get('/users-management', [App\Http\Controllers\UserRoleController::class, 'allUsers'])->name('users.management');
 
         Route::resource('reports', ReportController::class);
