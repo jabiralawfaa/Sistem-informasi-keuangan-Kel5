@@ -21,6 +21,9 @@
                             <x-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
                                 {{ __('Admin') }}
                             </x-nav-link>
+                            <x-nav-link :href="route('admin.receipts.index')" :active="request()->routeIs('admin.receipts.index')">
+                                {{ __('Receipts') }}
+                            </x-nav-link>
                         @elseif(Auth::user()->role === 'bendahara')
                             <x-nav-link :href="route('bendahara.transactions.index')" :active="request()->routeIs('transactions.index')">
                                 {{ __('Transactions') }}
@@ -94,6 +97,9 @@
                 @if(Auth::user()->role === 'admin')
                     <x-responsive-nav-link :href="route('admin.users')" :active="request()->routeIs('admin.users')">
                         {{ __('User Roles') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.receipts.index')" :active="request()->routeIs('admin.receipts.index')">
+                        {{ __('Receipts') }}
                     </x-responsive-nav-link>
                 @elseif(Auth::user()->role === 'bendahara')
                     <x-responsive-nav-link :href="route('bendahara.transactions.index')" :active="request()->routeIs('bendahara.transactions.index')">

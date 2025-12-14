@@ -83,6 +83,16 @@ class ReceiptController extends Controller
      */
     public function edit(Receipt $receipt)
     {
+        $user = Auth::user();
+
+        // Get the transaction associated with this receipt to check ownership
+        $transaction = $receipt->transaction;
+
+        // Allow admin to edit any receipt, otherwise check if it's related to their transaction
+        if ($user->role !== 'admin' && (!$transaction || $transaction->user_id !== $user->id)) {
+            abort(403);
+        }
+
         return view('receipts.edit', compact('receipt'));
     }
 
@@ -91,6 +101,16 @@ class ReceiptController extends Controller
      */
     public function update(Request $request, Receipt $receipt)
     {
+        $user = Auth::user();
+
+        // Get the transaction associated with this receipt to check ownership
+        $transaction = $receipt->transaction;
+
+        // Allow admin to update any receipt, otherwise check if it's related to their transaction
+        if ($user->role !== 'admin' && (!$transaction || $transaction->user_id !== $user->id)) {
+            abort(403);
+        }
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
@@ -109,7 +129,10 @@ class ReceiptController extends Controller
             'recipient_address' => $request->recipient_address,
         ]);
 
-        return redirect()->route('receipts.show', $receipt)->with('success', 'Receipt updated successfully.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = $user->role === 'admin' ? 'admin.receipts.show' : 'bendahara.receipts.show';
+
+        return redirect()->route($routeName, $receipt)->with('success', 'Receipt updated successfully.');
     }
 
     /**
@@ -117,9 +140,22 @@ class ReceiptController extends Controller
      */
     public function destroy(Receipt $receipt)
     {
+        $user = Auth::user();
+
+        // Get the transaction associated with this receipt to check ownership
+        $transaction = $receipt->transaction;
+
+        // Allow admin to delete any receipt, otherwise check if it's related to their transaction
+        if ($user->role !== 'admin' && (!$transaction || $transaction->user_id !== $user->id)) {
+            abort(403);
+        }
+
         $receipt->delete();
 
-        return redirect()->route('receipts.index')->with('success', 'Receipt deleted successfully.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = $user->role === 'admin' ? 'admin.receipts.index' : 'bendahara.receipts.index';
+
+        return redirect()->route($routeName)->with('success', 'Receipt deleted successfully.');
     }
 
     /**
@@ -127,8 +163,18 @@ class ReceiptController extends Controller
      */
     public function print(Receipt $receipt)
     {
+        $user = Auth::user();
+
+        // Get the transaction associated with this receipt to check ownership
+        $transaction = $receipt->transaction;
+
+        // Allow admin to print any receipt, otherwise check if it's related to their transaction
+        if ($user->role !== 'admin' && (!$transaction || $transaction->user_id !== $user->id)) {
+            abort(403);
+        }
+
         if (!$receipt->issued_date) {
-            $receipt->issued_date = now(); 
+            $receipt->issued_date = now();
         }
         $amountInWords = $this->numberToWords($receipt->amount);
         return view('receipts.print', compact('receipt', 'amountInWords'));
@@ -139,8 +185,10 @@ class ReceiptController extends Controller
      */
     public function createForTransaction(Transaction $transaction)
     {
-        // Ensure user can only create receipts for their own transactions
-        if ($transaction->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow admin to create receipts for any transaction, otherwise check if it's their own
+        if ($user->role !== 'admin' && $transaction->user_id !== $user->id) {
             abort(403);
         }
 
@@ -153,7 +201,7 @@ class ReceiptController extends Controller
             'description' => $transaction->description,
             'amount' => $transaction->amount,
             'issued_date' => Carbon::now(),
-            'issued_by' => Auth::user()->name ?? 'System',
+            'issued_by' => $user->name ?? 'System',
             'recipient_name' => 'Customer',
             'recipient_address' => 'N/A',
         ]);
@@ -161,7 +209,12 @@ class ReceiptController extends Controller
         // Link the receipt to the transaction
         $transaction->update(['receipt_id' => $receipt->id]);
 
-        return redirect()->route('bendahara.receipts.show', $receipt->id)->with('success', 'Receipt generated for transaction.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = $user->role === 'admin'
+            ? 'admin.receipts.show'
+            : 'bendahara.receipts.show';
+
+        return redirect()->route($routeName, $receipt->id)->with('success', 'Receipt generated for transaction.');
     }
 
     /**

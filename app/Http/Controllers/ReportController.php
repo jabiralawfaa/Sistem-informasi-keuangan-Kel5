@@ -230,4 +230,21 @@ class ReportController extends Controller
 
         return redirect()->route($redirectRoute, $report)->with('success', 'Monthly report generated successfully.');
     }
+
+    /**
+     * Print the specified report (for printing view).
+     */
+    public function print(Report $report)
+    {
+        $user = Auth::user();
+
+        // Allow users to print their own reports
+        // Also allow auditors to print reports (for audit purposes)
+        // Also allow admins to print all reports
+        if ($report->user_id !== Auth::id() && $user->role !== 'auditor' && $user->role !== 'admin') {
+            abort(403);
+        }
+
+        return view('reports.print', compact('report'));
+    }
 }

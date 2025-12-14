@@ -14,10 +14,20 @@ class TransactionController extends Controller
      */
     public function index()
     {
-        $transactions = Transaction::where('user_id', Auth::id())
-            ->with('category')
-            ->orderBy('date', 'desc')
-            ->paginate(10);
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
+            // Admin can see all transactions
+            $transactions = Transaction::with('category', 'user')
+                ->orderBy('date', 'desc')
+                ->paginate(10);
+        } else {
+            // Other users can only see their own transactions
+            $transactions = Transaction::where('user_id', Auth::id())
+                ->with('category')
+                ->orderBy('date', 'desc')
+                ->paginate(10);
+        }
 
         return view('transactions.index', compact('transactions'));
     }
@@ -53,7 +63,10 @@ class TransactionController extends Controller
             'date' => $request->date,
         ]);
 
-        return redirect()->route('bendahara.transactions.index')->with('success', 'Transaction created successfully.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = Auth::user()->role === 'admin' ? 'admin.transactions.index' : 'bendahara.transactions.index';
+
+        return redirect()->route($routeName)->with('success', 'Transaction created successfully.');
     }
 
     /**
@@ -61,8 +74,10 @@ class TransactionController extends Controller
      */
     public function show(Transaction $transaction)
     {
-        // Ensure user can only view their own transactions
-        if ($transaction->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow admin to view any transaction, otherwise check if it's their own
+        if ($user->role !== 'admin' && $transaction->user_id !== $user->id) {
             abort(403);
         }
 
@@ -74,8 +89,10 @@ class TransactionController extends Controller
      */
     public function edit(Transaction $transaction)
     {
-        // Ensure user can only edit their own transactions
-        if ($transaction->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow admin to edit any transaction, otherwise check if it's their own
+        if ($user->role !== 'admin' && $transaction->user_id !== $user->id) {
             abort(403);
         }
 
@@ -88,8 +105,10 @@ class TransactionController extends Controller
      */
     public function update(Request $request, Transaction $transaction)
     {
-        // Ensure user can only update their own transactions
-        if ($transaction->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow admin to update any transaction, otherwise check if it's their own
+        if ($user->role !== 'admin' && $transaction->user_id !== $user->id) {
             abort(403);
         }
 
@@ -109,7 +128,10 @@ class TransactionController extends Controller
             'date' => $request->date,
         ]);
 
-        return redirect()->route('bendahara.transactions.index')->with('success', 'Transaction updated successfully.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = Auth::user()->role === 'admin' ? 'admin.transactions.index' : 'bendahara.transactions.index';
+
+        return redirect()->route($routeName)->with('success', 'Transaction updated successfully.');
     }
 
     /**
@@ -117,13 +139,18 @@ class TransactionController extends Controller
      */
     public function destroy(Transaction $transaction)
     {
-        // Ensure user can only delete their own transactions
-        if ($transaction->user_id !== Auth::id()) {
+        $user = Auth::user();
+
+        // Allow admin to delete any transaction, otherwise check if it's their own
+        if ($user->role !== 'admin' && $transaction->user_id !== $user->id) {
             abort(403);
         }
 
         $transaction->delete();
 
-        return redirect()->route('bendahara.transactions.index')->with('success', 'Transaction deleted successfully.');
+        // Determine the correct route to redirect to based on user role
+        $routeName = Auth::user()->role === 'admin' ? 'admin.transactions.index' : 'bendahara.transactions.index';
+
+        return redirect()->route($routeName)->with('success', 'Transaction deleted successfully.');
     }
 }

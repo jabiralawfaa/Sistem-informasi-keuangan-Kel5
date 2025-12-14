@@ -9,18 +9,33 @@
             <div class="flex justify-between items-center mb-8">
                 <h1 class="text-3xl font-bold text-amber-400">Receipt Details</h1>
                 <div class="flex space-x-3">
-                    <a href="{{ route('bendahara.receipts.print', $receipt) }}" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200 flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5 4v1H4a2 2 0 00-2 2v6a2 2 0 002 2h1v7a2 2 0 002 2h8a2 2 0 002-2V13h1a2 2 0 002-2V7a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v1h6V4zm0 2H7v1h6V6zM7 9h6v6H7V9z" clip-rule="evenodd" />
-                        </svg>
-                        Print Receipt
-                    </a>
-                    <a href="{{ route('bendahara.receipts.edit', $receipt) }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
-                        Edit
-                    </a>
-                    <a href="{{ route('bendahara.receipts.index') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
-                        Back to List
-                    </a>
+                    @if(Auth::user()->role === 'admin')
+                        <a href="{{ route('admin.receipts.print', $receipt) }}" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5 4v1H4a2 2 0 00-2 2v6a2 2 0 002 2h1v7a2 2 0 002 2h8a2 2 0 002-2V13h1a2 2 0 002-2V7a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v1h6V4zm0 2H7v1h6V6zM7 9h6v6H7V9z" clip-rule="evenodd" />
+                            </svg>
+                            Print Receipt
+                        </a>
+                        <a href="{{ route('admin.receipts.edit', $receipt) }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                            Edit
+                        </a>
+                        <a href="{{ route('admin.receipts.index') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                            Back to List
+                        </a>
+                    @else
+                        <a href="{{ route('bendahara.receipts.print', $receipt) }}" target="_blank" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition duration-200 flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5 4v1H4a2 2 0 00-2 2v6a2 2 0 002 2h1v7a2 2 0 002 2h8a2 2 0 002-2V13h1a2 2 0 002-2V7a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v1h6V4zm0 2H7v1h6V6zM7 9h6v6H7V9z" clip-rule="evenodd" />
+                            </svg>
+                            Print Receipt
+                        </a>
+                        <a href="{{ route('bendahara.receipts.edit', $receipt) }}" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-lg transition duration-200">
+                            Edit
+                        </a>
+                        <a href="{{ route('bendahara.receipts.index') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+                            Back to List
+                        </a>
+                    @endif
                 </div>
             </div>
 
