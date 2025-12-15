@@ -128,6 +128,19 @@ class ReportController extends Controller
         return view('reports.show', compact('report'));
     }
 
+    public function destroy(Report $report)
+    {
+        // Cek otorisasi untuk memastikan hanya Admin/Auditor yang boleh menghapus
+        if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'auditor') {
+            abort(403);
+        }
+
+        $report->delete();
+
+        // kembali ke halaman indeks laporan
+        return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
+    }
+
     /**
      * Generate report content based on transaction data.
      */
