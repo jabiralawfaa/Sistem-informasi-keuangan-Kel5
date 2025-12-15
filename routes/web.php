@@ -31,14 +31,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         Route::get('/users', [App\Http\Controllers\UserRoleController::class, 'index'])->name('users');
         Route::put('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role');
         Route::get('/users-management', [App\Http\Controllers\UserRoleController::class, 'allUsers'])->name('users.management');
+        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('reports.monthly');
 
         Route::resource('reports', ReportController::class);
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
         Route::resource('cash-balances', CashBalanceController::class);
 
-        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
-            ->name('reports.monthly');
     });
 });
 
@@ -55,26 +54,21 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
         Route::resource('reports', ReportController::class);
-        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
-            ->name('reports.monthly');
-        
+        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('reports.monthly');
         Route::get('/cash-balances/monitor', [CashBalanceController::class, 'monitor'])->name('cash-balances.monitor');
-        Route::resource('cash-balances', CashBalanceController::class);
         
-
         // Add GET route for transaction receipt creation to redirect appropriately
         Route::get('/transactions/{transaction}/receipt', function (\App\Models\Transaction $transaction) {
             return redirect()->route('bendahara.transactions.show', $transaction->id)
-                ->with('error', 'Use the form to generate a receipt for this transaction.');
+            ->with('error', 'Use the form to generate a receipt for this transaction.');
         })->name('transactions.receipt.get');
-
+        
         // Keep the POST route for creating receipt from transaction
-        Route::post('/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])
-            ->name('transactions.receipt');
-
+        Route::post('/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])->name('transactions.receipt');
+        
         // Add print route for receipts
-        Route::get('/receipts/{receipt}/print', [ReceiptController::class, 'print'])
-            ->name('receipts.print');
+        Route::get('/receipts/{receipt}/print', [ReceiptController::class, 'print'])->name('receipts.print');
+        Route::resource('cash-balances', CashBalanceController::class);
     });
 });
 

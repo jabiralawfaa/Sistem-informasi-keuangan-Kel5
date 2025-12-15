@@ -54,9 +54,16 @@ class ReportController extends Controller
         ]);
 
         // Calculate financial data for the period
-        $transactions = Transaction::where('user_id', Auth::id())
-            ->whereBetween('date', [$request->period_start, $request->period_end])
-            ->get();
+        // $transactions = Transaction::where('user_id', Auth::id())
+        //     ->whereBetween('date', [$request->period_start, $request->period_end])
+        //     ->get();
+        $transactionsQuery = Transaction::query()->whereBetween('date', [$request->period_start, $request->period_end]);
+
+        if (Auth::user()->role === 'bendahara') {
+            $transactionsQuery->where('user_id', Auth::id());
+        }
+
+        $transactions = $transactionsQuery->get();
 
         $totalIncome = $transactions->where('type', 'income')->sum('amount');
         $totalExpenses = $transactions->where('type', 'expense')->sum('amount');
@@ -208,9 +215,18 @@ class ReportController extends Controller
         }
 
         // Calculate financial data for the month
-        $transactions = Transaction::where('user_id', Auth::id())
-            ->whereBetween('date', [$currentMonthStart, $currentMonthEnd])
-            ->get();
+        // $transactions = Transaction::where('user_id', Auth::id())
+        //     ->whereBetween('date', [$currentMonthStart, $currentMonthEnd])
+        //     ->get();
+
+        $transactionsQuery = Transaction::query()
+            ->whereBetween('date', [$currentMonthStart, $currentMonthEnd]);
+
+        if (Auth::user()->role === 'bendahara') {
+            $transactionsQuery->where('user_id', Auth::id());
+        }
+
+        $transactions = $transactionsQuery->get();
 
         $totalIncome = $transactions->where('type', 'income')->sum('amount');
         $totalExpenses = $transactions->where('type', 'expense')->sum('amount');
