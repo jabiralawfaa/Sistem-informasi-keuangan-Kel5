@@ -25,8 +25,8 @@ class Receipt extends Model
         'updated_at' => 'datetime',
     ];
 
-    public function transactions(): HasMany
+    public function transaction()
     {
-        return $this->hasMany(Transaction::class);
+        return $this->hasOne(Transaction::class, 'receipt_id');
     }
 }
