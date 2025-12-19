@@ -11,6 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // membuat tabel untuk menyimpan data kwitansi
         Schema::create('receipts', function (Blueprint $table) {
             $table->id();
             $table->string('receipt_number')->unique();
