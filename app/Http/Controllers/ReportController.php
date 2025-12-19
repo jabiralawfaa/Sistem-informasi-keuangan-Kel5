@@ -54,9 +54,16 @@ class ReportController extends Controller
         ]);
 
         // Calculate financial data for the period
-        $transactions = Transaction::where('user_id', Auth::id())
-            ->whereBetween('date', [$request->period_start, $request->period_end])
-            ->get();
+        // $transactions = Transaction::where('user_id', Auth::id())
+        //     ->whereBetween('date', [$request->period_start, $request->period_end])
+        //     ->get();
+        $transactionsQuery = Transaction::query()->whereBetween('date', [$request->period_start, $request->period_end]);
+
+        if (Auth::user()->role === 'bendahara') {
+            $transactionsQuery->where('user_id', Auth::id());
+        }
+
+        $transactions = $transactionsQuery->get();
 
         $totalIncome = $transactions->where('type', 'income')->sum('amount');
         $totalExpenses = $transactions->where('type', 'expense')->sum('amount');
@@ -119,6 +126,19 @@ class ReportController extends Controller
         }
 
         return view('reports.show', compact('report'));
+    }
+
+    public function destroy(Report $report)
+    {
+        // Cek otorisasi untuk memastikan hanya Admin/Auditor yang boleh menghapus
+        if (Auth::user()->role !== 'admin' && Auth::user()->role !== 'auditor') {
+            abort(403);
+        }
+
+        $report->delete();
+
+        // kembali ke halaman indeks laporan
+        return redirect()->back()->with('success', 'Laporan berhasil dihapus.');
     }
 
     /**
@@ -184,16 +204,17 @@ class ReportController extends Controller
         $currentMonthStart = Carbon::now()->startOfMonth();
         $currentMonthEnd = Carbon::now()->endOfMonth();
 
-        // Check if report for this month already exists
+        // Check if report for this month already exists (Validasi duplikasi laporan)
         $existingReport = Report::where('user_id', Auth::id())
             ->where('type', 'monthly')
             ->where('period_start', $currentMonthStart)
             ->first();
 
-        // Determine the appropriate route to redirect based on the current route
+        // untuk mendeteksi siapa yang menekan tombol (admin/auditor/dll)
         $currentRoute = request()->route()->getName();
         $redirectRoute = 'reports.show'; // default
 
+        // untuk kembali ke url yang benar sesuai user yang menekan tombol
         if (str_starts_with($currentRoute, 'admin.')) {
             $redirectRoute = 'admin.reports.show';
         } elseif (str_starts_with($currentRoute, 'auditor.')) {
@@ -208,9 +229,18 @@ class ReportController extends Controller
         }
 
         // Calculate financial data for the month
-        $transactions = Transaction::where('user_id', Auth::id())
-            ->whereBetween('date', [$currentMonthStart, $currentMonthEnd])
-            ->get();
+        // $transactions = Transaction::where('user_id', Auth::id())
+        //     ->whereBetween('date', [$currentMonthStart, $currentMonthEnd])
+        //     ->get();
+
+        $transactionsQuery = Transaction::query()->whereBetween('date', [$currentMonthStart, $currentMonthEnd]);
+
+        if (Auth::user()->role === 'bendahara') {
+            $transactionsQuery->where('user_id', Auth::id());
+        }
+
+        // Sistem menarik semua data transaksi yang terjadi di bulan tersebut
+        $transactions = $transactionsQuery->get();
 
         $totalIncome = $transactions->where('type', 'income')->sum('amount');
         $totalExpenses = $transactions->where('type', 'expense')->sum('amount');

@@ -15,7 +15,21 @@
                         </svg>
                         Print Report
                     </button>
-                    <a href="{{ route('bendahara.reports.index') }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
+
+                    {{-- Navigasi dinamis berdasarkan role (Tombol Back to Reports) --}}
+                    @php
+                        $role = Auth::user()->role;
+                        $backRoute = 'reports.index'; // Default fallback
+
+                        if ($role === 'admin') {
+                            $backRoute = 'admin.reports.index';
+                        } elseif ($role === 'auditor') {
+                            $backRoute = 'auditor.reports.index';
+                        } elseif ($role === 'bendahara') {
+                            $backRoute = 'bendahara.reports.index';
+                        }
+                    @endphp
+                    <a href="{{ route($backRoute) }}" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition duration-200">
                         Back to Reports
                     </a>
                 </div>

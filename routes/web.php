@@ -25,39 +25,34 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->group(function () {
 
-        Route::get('/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])
-            ->name('dashboard');
+        Route::get('/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('dashboard');
 
         Route::get('/users', [App\Http\Controllers\UserRoleController::class, 'index'])->name('users');
         Route::put('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role');
         Route::post('/users/{id}/role', [App\Http\Controllers\UserRoleController::class, 'updateRole'])->name('users.update-role-post');
         Route::get('/users-management', [App\Http\Controllers\UserRoleController::class, 'allUsers'])->name('users.management');
+        
+        // Add GET route for transaction receipt creation to redirect appropriately (similar to bendahara)
+        Route::get('/transactions/{transaction}/receipt', function (\App\Models\Transaction $transaction) {
+            return redirect()->route('admin.transactions.show', $transaction->id)
+            ->with('error', 'Use the form to generate a receipt for this transaction.');
+        })->name('transactions.receipt.get');
+        
+        // Add POST route for creating receipt from transaction
+        Route::post('/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])->name('transactions.receipt');
+        
+        // Add print route for admin receipts
+        Route::get('/receipts/{receipt}/print', [ReceiptController::class, 'print'])->name('receipts.print');
+        
+        // Add print route for admin reports
+        Route::get('/reports/{report}/print', [ReportController::class, 'print'])->name('reports.print');
+        
+        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('reports.monthly');
 
         Route::resource('reports', ReportController::class);
         Route::resource('transactions', TransactionController::class);
         Route::resource('receipts', ReceiptController::class);
         Route::resource('cash-balances', CashBalanceController::class);
-
-        // Add GET route for transaction receipt creation to redirect appropriately (similar to bendahara)
-        Route::get('/transactions/{transaction}/receipt', function (\App\Models\Transaction $transaction) {
-            return redirect()->route('admin.transactions.show', $transaction->id)
-                ->with('error', 'Use the form to generate a receipt for this transaction.');
-        })->name('transactions.receipt.get');
-
-        // Add POST route for creating receipt from transaction
-        Route::post('/transactions/{transaction}/receipt', [ReceiptController::class, 'createForTransaction'])
-            ->name('transactions.receipt');
-
-        // Add print route for admin receipts
-        Route::get('/receipts/{receipt}/print', [ReceiptController::class, 'print'])
-            ->name('receipts.print');
-
-        // Add print route for admin reports
-        Route::get('/reports/{report}/print', [ReportController::class, 'print'])
-            ->name('reports.print');
-
-        Route::get('/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
-            ->name('reports.monthly');
     });
 });
 
@@ -105,18 +100,14 @@ Route::middleware(['auth', 'role-check', 'role:bendahara|admin|auditor '])->grou
 // Auditor routes
 Route::middleware(['auth', 'role-check', 'role:auditor'])->group(function () {
 
-    Route::get('/auditor/dashboard', [App\Http\Controllers\AuditorDashboardController::class, 'index'])
-        ->name('auditor.dashboard');
+    Route::get('/auditor/dashboard', [App\Http\Controllers\AuditorDashboardController::class, 'index'])->name('auditor.dashboard');
 
-    Route::get('/auditor/reports/monthly', [ReportController::class, 'generateMonthlyReport'])
-        ->name('auditor.reports.monthly');
-
-    Route::resource('/auditor/reports', ReportController::class)
-        ->names('auditor.reports');
+    Route::get('/auditor/reports/monthly', [ReportController::class, 'generateMonthlyReport'])->name('auditor.reports.monthly');
 
     // Add print route for auditor reports
-    Route::get('/auditor/reports/{report}/print', [ReportController::class, 'print'])
-        ->name('auditor.reports.print');
+    Route::get('/auditor/reports/{report}/print', [ReportController::class, 'print'])->name('auditor.reports.print');
+    
+    Route::resource('/auditor/reports', ReportController::class)->names('auditor.reports');
 });
 
 Route::middleware(['auth', 'role-check'])->group(function () {

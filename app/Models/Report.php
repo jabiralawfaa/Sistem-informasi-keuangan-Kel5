@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
-    protected $fillable = [
+    protected $fillable = [ // fillable: mengatur data (field) yang boleh diisi
         'user_id',
         'title',
         'type', // 'monthly', 'quarterly', 'annual'
@@ -20,7 +20,7 @@ class Report extends Model
         'file_path'
     ];
 
-    protected $casts = [
+    protected $casts = [ // casts: mengubah format data otomatis
         'period_start' => 'date',
         'period_end' => 'date',
         'total_income' => 'decimal:2',
@@ -30,6 +30,7 @@ class Report extends Model
         'updated_at' => 'datetime',
     ];
 
+    // Relasi Many to One dengan tabel user (1 user dapat membuat banyak laporan)
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

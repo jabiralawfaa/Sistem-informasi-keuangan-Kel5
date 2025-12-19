@@ -91,14 +91,14 @@ class FinancialSeeder extends Seeder
         // Create report
         Report::create([
             'user_id' => $admin->id,
-            'title' => 'Laporan Keuangan Bulan Januari',
+            'title' => 'Laporan Keuangan Bulan Desember 2025',
             'type' => 'monthly',
             'period_start' => now()->startOfMonth(),
             'period_end' => now()->endOfMonth(),
             'total_income' => 10000000,
             'total_expenses' => 3000000,
             'net_income' => 7000000,
-            'content' => 'Laporan keuangan bulan Januari menunjukkan pendapatan sebesar 10 juta dan pengeluaran 3 juta, dengan laba bersih sebesar 7 juta.',
+            'content' => `Laporan keuangan bulan Desember menunjukkan pendapatan sebesar {$total_income} dan pengeluaran {$total_expenses}, dengan laba bersih sebesar 7 juta.`,
         ]);
     }
 }
